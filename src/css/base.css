@@ -46,7 +46,9 @@
       button, input { font: inherit; }
       button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
       .layout { display: grid; min-height: 100vh; min-height: 100svh; min-height: 100dvh; grid-template-columns: minmax(320px, .92fr) 1.08fr; }
-      .visual { display: flex; min-height: 100vh; flex-direction: column; justify-content: space-between; padding: 38px clamp(28px, 5vw, 72px); color: #fff; background: linear-gradient(180deg, rgba(20,45,34,.08), rgba(20,45,34,.66)), url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1400&q=85') center / cover; }
+      .visual { position: relative; display: flex; min-height: 100vh; overflow: hidden; flex-direction: column; justify-content: space-between; padding: 38px clamp(28px, 5vw, 72px); color: #fff; isolation: isolate; background: linear-gradient(145deg, #123b35 0%, #1e5945 54%, #6e9f6a 100%); }
+      .visual::before { position: absolute; z-index: -1; top: -18%; right: -18%; width: 72%; aspect-ratio: 1; border: 1px solid rgba(255,255,255,.2); border-radius: 42% 58% 63% 37% / 44% 38% 62% 56%; background: radial-gradient(circle at 38% 35%, rgba(231,246,207,.44), rgba(178,220,145,.08) 48%, transparent 70%); transform: rotate(18deg); content: ''; }
+      .visual::after { position: absolute; z-index: -1; right: -12%; bottom: -22%; width: 78%; aspect-ratio: 1.2; border-radius: 48% 52% 34% 66% / 55% 35% 65% 45%; background: linear-gradient(135deg, rgba(255,224,190,.28), rgba(255,255,255,.04)); transform: rotate(-14deg); box-shadow: -30px -28px 0 rgba(255,255,255,.05), -60px -56px 0 rgba(255,255,255,.035); content: ''; }
       .brand { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 700; letter-spacing: .04em; }
       .brand-mark { display: grid; width: 36px; aspect-ratio: 1; place-items: center; border: 1px solid rgba(255,255,255,.7); border-radius: 50%; font-family: 'Playfair Display', serif; font-size: 19px; }
       .visual-copy { max-width: 470px; padding-bottom: 5vh; }
