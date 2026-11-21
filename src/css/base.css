@@ -120,4 +120,35 @@
       }
       @media (max-width: 420px) { .panel { padding-right: 20px; padding-left: 20px; } h1 { font-size: 30px; } }
       @media (max-width: 760px) { input, select, textarea { font-size: 16px; } }
+      @media (max-width: 760px) {
+        .layout { background: var(--page); }
+        .visual { min-height: 342px; align-items: center; justify-content: flex-start; padding: calc(28px + env(safe-area-inset-top)) 24px 48px; border-radius: 0 0 34px 34px; text-align: center; }
+        .brand { align-self: stretch; justify-content: center; font-size: 14px; }
+        .brand-mark { width: 42px; font-size: 21px; }
+        .visual-copy { padding: 52px 0 0; }
+        .visual-copy p { margin-bottom: 10px; font-size: 10px; letter-spacing: .2em; }
+        .visual-copy h2 { font-size: clamp(35px, 10vw, 46px); letter-spacing: -.03em; }
+        .visual-copy span { max-width: 290px; margin: 12px auto 0; color: #d9e8d8; font-size: 14px; line-height: 1.55; }
+        .panel { z-index: 2; min-height: 0; margin-top: -30px; flex: 1 0 auto; padding: 34px 24px calc(28px + env(safe-area-inset-bottom)); border-radius: 30px 30px 0 0; box-shadow: 0 -8px 30px rgba(18,59,53,.14); }
+        .top-actions { top: -304px; right: 24px; }
+        .top-button { width: 42px; height: 42px; border-color: rgba(255,255,255,.25); color: #fff; background: rgba(18,59,53,.18); backdrop-filter: blur(8px); }
+        .top-button:hover { background: rgba(255,255,255,.16); }
+        .form-wrap { width: min(100%, 430px); }
+        h1 { font-size: clamp(30px, 8vw, 38px); letter-spacing: -.025em; }
+        .intro { margin-top: 8px; margin-bottom: 26px; }
+        form { gap: 16px; }
+        label { font-size: 13px; }
+        input { height: 54px; border-radius: 15px; }
+        .password-toggle { height: 54px; }
+        .submit, .oauth { min-height: 54px; border-radius: 15px; font-size: 14px; }
+        .submit { margin-top: 7px; }
+        .separator { margin: 24px 0 16px; }
+        .oauth { background: transparent; }
+      }
+      @media (max-width: 380px) {
+        .visual { min-height: 318px; }
+        .visual-copy { padding-top: 38px; }
+        .panel { padding-right: 20px; padding-left: 20px; }
+        .top-actions { top: -280px; right: 20px; }
+      }
       @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
