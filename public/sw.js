@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mi-jardin-shell-v3';
+const CACHE_NAME = 'mi-jardin-shell-v4';
 const APP_ROOT = new URL('./', self.registration.scope);
 const SHELL_FILES = ['manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png']
   .map((ruta) => new URL(ruta, APP_ROOT).href);
@@ -55,7 +55,7 @@ self.addEventListener('fetch', (event) => {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE_NAME);
       try {
-        const response = await fetch(request);
+        const response = await fetch(new Request(request, { cache: 'no-store' }));
         if (response.ok || response.type === 'opaque') {
           await cache.put(request.mode === 'navigate' ? APP_ROOT.href : request, response.clone());
         }
