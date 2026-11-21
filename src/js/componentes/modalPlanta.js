@@ -117,6 +117,16 @@ export function inicializarModalPlanta(contexto) {
     actualizarPreview(fotoSeleccionada);
   });
 
+  formPlanta?.addEventListener('keydown', (evento) => {
+    if (evento.key !== 'Enter' || evento.target.matches('textarea, button')) return;
+    evento.preventDefault();
+    const campos = [...formPlanta.querySelectorAll('input:not([type="hidden"]), select, textarea, button')]
+      .filter((campo) => !campo.disabled && !campo.hidden);
+    const indice = campos.indexOf(evento.target);
+    const siguiente = campos.slice(indice + 1).find((campo) => campo.type !== 'submit');
+    siguiente?.focus();
+  });
+
   formPlanta?.addEventListener('submit', async (evento) => {
     evento.preventDefault();
     if (!formPlanta.reportValidity()) return;
