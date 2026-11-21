@@ -19,6 +19,7 @@ import { inicializarModalPlanta } from './componentes/modalPlanta.js';
 import { inicializarTema, aplicarTema } from './utils/tema.js';
 import { inicializarAccesibilidad } from './utils/accesibilidad.js';
 import { inicializarCamposClave, actualizarEtiquetasCamposClave } from './componentes/campoClave.js';
+import { inicializarBarraInferior } from './utils/teclado.js';
 import {
   guardarSesionOffline,
   obtenerSesionOffline,
@@ -184,6 +185,7 @@ inicializarHistorial(contexto);
 inicializarIdentificar(contexto);
 inicializarMenu(contexto);
 inicializarAccesibilidad();
+inicializarBarraInferior();
 
 function cambiarVista(nombre, pestaña = nombre) {
   const modalAbierto = document.querySelector('#modal-planta:not(.oculto)');
