@@ -38,6 +38,8 @@ function guardar() { localStorage.setItem(CLAVE, JSON.stringify(preferencias)); 
 function aplicarVisual() {
   const raiz = document.documentElement;
   raiz.style.setProperty('--a11y-brightness', String(preferencias.brillo / 100));
+  raiz.style.setProperty('--a11y-dim-opacity', String(Math.max(0, 1 - (preferencias.brillo / 100))));
+  raiz.dataset.a11yBrilloModo = preferencias.brillo < 100 ? 'oscuro' : 'normal';
   raiz.style.setProperty('--a11y-font-family', FUENTES[preferencias.fuente] || FUENTES.estandar);
   raiz.dataset.a11yFuente = preferencias.fuente;
   raiz.dataset.a11yTamano = preferencias.tamano;
