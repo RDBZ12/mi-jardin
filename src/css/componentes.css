@@ -164,7 +164,7 @@ html[data-theme='dark'] .theme-option.seleccionado { border-color: #a9d8a8; back
 .form-error { min-height: 0; margin: 0 0 10px; font-size: 12px; }
 .modal-actions { display: flex; justify-content: end; gap: 9px; margin-top: 6px; }
 @media (max-width: 768px) {
-.plants-heading h1 { font-size: 29px; }
+.plants-heading h1 { font-size: clamp(1.45rem, 6.2vw, 1.8rem); }
 .button-primary, .button-secondary { padding: 0 12px; }
 .fab-add-plant { right: calc(18px + env(safe-area-inset-right)); bottom: calc(76px + env(safe-area-inset-bottom)); width: 54px; height: 54px; }
 .grid-plantas { grid-template-columns: 1fr; gap: 12px; }
