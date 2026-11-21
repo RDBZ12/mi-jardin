@@ -1,6 +1,6 @@
 import './paginas/montarVistas.js';
 import { inicializarPerfil, cargarPerfil } from './paginas/perfil.js';
-import { idiomaApp, tApp, traducirDashboard, establecerIdiomaActual, actualizarSeleccionTema, traduccionCategoria, traduccionLuz, traduccionTipo, traduccionRepeticion } from './utils/idiomas.js';
+import { idiomaApp, tApp, traducirDashboard, establecerIdiomaActual, traduccionCategoria, traduccionLuz, traduccionTipo, traduccionRepeticion } from './utils/idiomas.js';
 import { inicializarInicio, renderizarInicio } from './paginas/inicio.js';
 import { inicializarRiego, renderizarRiego } from './paginas/riego.js';
 import { inicializarRecordatorios, renderizarRecordatorios } from './paginas/recordatorios.js';
@@ -16,12 +16,17 @@ import { cargarEstadoJardin } from './servicios/estadoJardin.js';
 import { fechaProximoRiego, formatearFecha } from './utils/fechas.js';
 import { crearElemento, mostrarVacio } from './utils/dom.js';
 import { inicializarModalPlanta } from './componentes/modalPlanta.js';
+import { inicializarTema, aplicarTema } from './utils/tema.js';
+import { inicializarAccesibilidad } from './utils/accesibilidad.js';
+import { inicializarCamposClave, actualizarEtiquetasCamposClave } from './componentes/campoClave.js';
 import {
   guardarSesionOffline,
   obtenerSesionOffline,
   limpiarSesionOffline,
   sincronizarPendientes,
 } from './servicios/sincronizador.js';
+
+inicializarTema();
 
 const vistaAuth = document.querySelector('#vista-auth');
 const vistaApp = document.querySelector('#vista-app');
@@ -31,7 +36,6 @@ const estadoConexion = document.querySelector('#connection-status');
 const paginas = [...document.querySelectorAll('[data-pagina]')];
 const botonesNavegacion = [...document.querySelectorAll('.app-nav [data-ruta]')];
 const inicioPlantas = document.querySelector('#inicio-plantas');
-const botonesTema = [...document.querySelectorAll('[data-theme-choice]')];
 
 
 
@@ -126,6 +130,7 @@ function mostrarApp(usuario, offline = !navigator.onLine) {
 
 document.addEventListener('mi-jardin-language-change', (evento) => {
   establecerIdiomaActual(evento.detail?.language);
+  actualizarEtiquetasCamposClave({ mostrar: tApp('showPassword'), ocultar: tApp('hidePassword') });
   traducirDashboard();
   actualizarEstadoConexion();
   actualizarResumenPerfil();
@@ -133,12 +138,8 @@ document.addEventListener('mi-jardin-language-change', (evento) => {
 });
 
 document.addEventListener('mi-jardin-theme-change', (evento) => {
-  if (['light', 'dark', 'system'].includes(evento.detail?.theme)) actualizarSeleccionTema(evento.detail.theme);
+  if (['light', 'dark', 'system'].includes(evento.detail?.theme)) aplicarTema(evento.detail.theme);
 });
-
-botonesTema.forEach((boton) => boton.addEventListener('click', () => {
-  document.dispatchEvent(new CustomEvent('mi-jardin-theme-change', { detail: { theme: boton.dataset.themeChoice } }));
-}));
 
 const contexto = {
   obtenerEstado: () => ({ plantas: plantasActuales, usuario: usuarioActualId, servicioDisponible, vistaActual }),
@@ -173,6 +174,7 @@ const contexto = {
 };
 inicializarAutenticacion(contexto);
 inicializarPerfil(contexto);
+inicializarCamposClave();
 inicializarModalPlanta(contexto);
 inicializarPlantas(contexto);
 inicializarInicio(contexto);
@@ -181,6 +183,7 @@ inicializarRecordatorios(contexto);
 inicializarHistorial(contexto);
 inicializarIdentificar(contexto);
 inicializarMenu(contexto);
+inicializarAccesibilidad();
 
 function cambiarVista(nombre, pestaña = nombre) {
   if (!rutasPersistibles.has(nombre)) nombre = 'inicio';

@@ -1,0 +1,15 @@
+:root { --a11y-brightness: 1; --a11y-font-family: 'DM Sans', sans-serif; }
+#vista-auth, #vista-app { filter: brightness(var(--a11y-brightness)); }
+html[data-a11y-fuente='legible'] body, html[data-a11y-fuente='espaciada'] body { font-family: var(--a11y-font-family); }
+html[data-a11y-tamano='grande'] { font-size: 112%; }
+html[data-a11y-tamano='extra'] { font-size: 125%; }
+html.a11y-negrita body, html.a11y-negrita button, html.a11y-negrita input, html.a11y-negrita select, html.a11y-negrita textarea { font-weight: 700; }
+html[data-contraste='alto'] #vista-app, html[data-contraste='alto'] #vista-auth { --page: #000; --surface: #000; --surface-raised: #202020; --text: #fff; --muted: #fff; --line: #fff; --accent: #ffff00; --link: #ffff00; }
+html[data-contraste='alto'] .menu-fila, html[data-contraste='alto'] .profile-card, html[data-contraste='alto'] input, html[data-contraste='alto'] select, html[data-contraste='alto'] button { border-width: 2px; }
+#a11y-controles { display: grid; gap: 14px; }
+.a11y-control-row { display: grid; gap: 7px; }
+.a11y-control-row > label, .a11y-switch-row { color: var(--text); font-size: 13px; font-weight: 600; }
+.a11y-control-row input[type='range'] { accent-color: var(--accent); }
+.a11y-help { color: var(--muted); font-size: 11px; line-height: 1.45; }
+.a11y-switch-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.a11y-switch-row input { width: 20px; height: 20px; accent-color: var(--accent); }

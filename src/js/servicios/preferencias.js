@@ -1,17 +1,19 @@
 const TRADUCCIONES = {
   es: {
+    a11y_brillo_ayuda: 'Ajusta la luminosidad de Mi Jardín. El brillo físico se cambia desde el Centro de control del iPhone.',
     menu_titulo: 'Menú', menu_identificar: 'Identificar plantas', menu_historial: 'Historial de cuidados', menu_perfil: 'Perfil', menu_sonidos: 'Sonidos y alertas', menu_datos: 'Datos entre dispositivos', menu_idioma: 'Idioma', menu_salir: 'Cerrar sesión', volver: 'Volver al menú', volverPerfil: 'Volver a Perfil',
     perfil_apariencia_categoria: 'Apariencia', perfil_cuenta_categoria: 'Información personal', perfil_respaldo_categoria: 'Respaldo de mi jardín',
     perfil_titulo: 'Mi Perfil', perfil_nombre: 'Nombre:', perfil_correo: 'Correo:', perfil_plantas: 'Plantas registradas:',
     sonido_titulo: 'Tono de recordatorio', sonido_desc: 'Elige cómo sonarán las alertas de riego en este dispositivo.', sonido_ninguno: 'Ninguno (Silencio)', sonido_digital: 'Digital', sonido_suave: 'Suave', sonido_campana: 'Campana', sonido_probar: 'Probar sonido',
-    sync_titulo: 'Datos entre dispositivos', sync_desc: 'Sincroniza tu colección de plantas y cuidados con la nube cuando tengas conexión.', sync_boton: 'Sincronizar ahora', idioma_titulo: 'Idioma de la aplicación',
+    sync_titulo: 'Datos entre dispositivos', sync_desc: 'Sincroniza tu colección de plantas y cuidados con la nube cuando tengas conexión.', sync_boton: 'Sincronizar ahora', idioma_titulo: 'Idioma de la aplicación', menu_accesibilidad: 'Accesibilidad', a11y_titulo: 'Accesibilidad', a11y_intro: 'Personaliza la lectura y la apariencia de la aplicación.', a11y_brillo: 'Brillo', a11y_fuente: 'Tipo de letra', a11y_fuente_estandar: 'Estándar', a11y_fuente_legible: 'Alta legibilidad', a11y_fuente_espaciada: 'Espaciada', a11y_tamano: 'Tamaño de letra', a11y_normal: 'Normal', a11y_grande: 'Grande', a11y_extra: 'Extra grande', a11y_negritas: 'Negritas', a11y_contraste: 'Alto contraste', a11y_sonidos: 'Sonidos', a11y_narrador: 'Narrador', a11y_probar_sonido: 'Probar sonido', a11y_restablecer: 'Restablecer valores',
   },
   en: {
+    a11y_brillo_ayuda: 'Adjusts Mi Jardín brightness. Physical brightness is changed from iPhone Control Center.',
     menu_titulo: 'Menu', menu_identificar: 'Identify plants', menu_historial: 'Care history', menu_perfil: 'Profile', menu_sonidos: 'Sounds & alerts', menu_datos: 'Cross-device data', menu_idioma: 'Language', menu_salir: 'Log out', volver: 'Back to menu', volverPerfil: 'Back to Profile',
     perfil_apariencia_categoria: 'Appearance', perfil_cuenta_categoria: 'Personal information', perfil_respaldo_categoria: 'Garden backup',
     perfil_titulo: 'My Profile', perfil_nombre: 'Name:', perfil_correo: 'Email:', perfil_plantas: 'Registered plants:',
     sonido_titulo: 'Reminder tone', sonido_desc: 'Choose how watering alerts sound on this device.', sonido_ninguno: 'None (Mute)', sonido_digital: 'Digital', sonido_suave: 'Soft', sonido_campana: 'Bell', sonido_probar: 'Test sound',
-    sync_titulo: 'Cross-device data', sync_desc: 'Sync your plant collection and care logs with the cloud when online.', sync_boton: 'Sync now', idioma_titulo: 'App language',
+    sync_titulo: 'Cross-device data', sync_desc: 'Sync your plant collection and care logs with the cloud when online.', sync_boton: 'Sync now', idioma_titulo: 'App language', menu_accesibilidad: 'Accessibility', a11y_titulo: 'Accessibility', a11y_intro: 'Customize how the app looks and reads.', a11y_brillo: 'Brightness', a11y_fuente: 'Font', a11y_fuente_estandar: 'Standard', a11y_fuente_legible: 'High readability', a11y_fuente_espaciada: 'Spaced', a11y_tamano: 'Text size', a11y_normal: 'Normal', a11y_grande: 'Large', a11y_extra: 'Extra large', a11y_negritas: 'Bold text', a11y_contraste: 'High contrast', a11y_sonidos: 'Sounds', a11y_narrador: 'Screen reader', a11y_probar_sonido: 'Test sound', a11y_restablecer: 'Reset values',
   },
 };
 

@@ -1,5 +1,7 @@
 export const textoApp = {
   es: {
+    a11yBrightnessHint: 'Ajusta la luminosidad de Mi Jardín. El brillo físico se cambia desde el Centro de control del iPhone.',
+    showPassword: 'Mostrar contraseña', hidePassword: 'Ocultar contraseña',
     tagline: 'Tu compañero botánico', hello: 'Hola', logout: 'Cerrar sesión', navLabel: 'Secciones de Mi Jardín',
     navHome: 'Inicio', navPlants: 'Mis plantas', navIdentify: 'Identificar', navWater: 'Riego', navHistory: 'Historial', navReminders: 'Recordatorios', navMenu: 'Menú',
     homeEyebrow: 'TU ESPACIO VERDE', homeTitle: 'Resumen', addPlant: 'Agregar planta', plants: 'Plantas', nextWatering: 'Próximo riego',
@@ -16,7 +18,7 @@ export const textoApp = {
     noRepeat: 'No repetir', daily: 'Diaria', weekly: 'Semanal', biweekly: 'Cada dos semanas', monthly: 'Mensual', saveReminder: 'Guardar recordatorio',
     fertilization: 'Fertilización', pruning: 'Poda', transplant: 'Trasplante',
     backToPlants: 'Volver a mis plantas', profileEyebrow: 'TU CUENTA', profileTitle: 'Mi perfil', profileIntro: 'Administra la información y las preferencias de tu jardín.',
-    appearanceTitle: 'Apariencia e idioma', personalize: 'PERSONALIZAR', makeItYours: 'Haz que este espacio se sienta tuyo.', themeLabel: 'Tema de la aplicación', lightMode: 'Claro', darkMode: 'Oscuro', systemMode: 'Sistema', systemThemeHint: 'Sigue el modo de tu dispositivo.', languageLabel: 'Idioma', spanish: 'Español', english: 'English',
+    appearanceTitle: 'Apariencia e idioma', personalize: 'PERSONALIZAR', makeItYours: 'Haz que este espacio se sienta tuyo.', themeLabel: 'Tema de la aplicación', lightMode: 'Claro', darkMode: 'Oscuro', systemMode: 'Sistema', systemThemeHint: 'Sigue el modo de tu dispositivo.', languageLabel: 'Idioma', spanish: 'Español', english: 'English', menuAccessibility: 'Accesibilidad', a11yTitle: 'Accesibilidad', a11yIntro: 'Personaliza la lectura y la apariencia de la aplicación.', a11yBrightness: 'Brillo', a11yFont: 'Tipo de letra', a11yFontStandard: 'Estándar', a11yFontReadable: 'Alta legibilidad', a11yFontSpaced: 'Espaciada', a11ySize: 'Tamaño de letra', a11yNormal: 'Normal', a11yLarge: 'Grande', a11yExtra: 'Extra grande', a11yBold: 'Negritas', a11yContrast: 'Alto contraste', a11ySounds: 'Sonidos', a11yNarrator: 'Narrador', a11yTestSound: 'Probar sonido', a11yReset: 'Restablecer valores',
     gardenAccountTitle: 'Tu jardín', plantsInCollection: 'plantas en tu colección.', onlineSyncText: 'La colección y los cuidados se sincronizan con tu cuenta cuando hay conexión.', offlineSyncText: 'Sin conexión: los cambios quedan guardados en este dispositivo y se sincronizarán al volver la conexión.',
     backupTitle: 'Respaldo de mi jardín', backupIntro: 'Exporta plantas, cuidados y recordatorios pendientes o restaura un respaldo JSON. Las fotos no se incluyen.', exportGarden: 'Exportar mi jardín', importBackup: 'Importar respaldo JSON', backupExported: 'Respaldo descargado.', backupImported: 'Respaldo importado: {plants} plantas, {care} cuidados y {reminders} recordatorios.', invalidBackup: 'El archivo no es un respaldo válido de Mi Jardín.', backupFailed: 'No se pudo procesar el respaldo: {error}',
     timerSoundTitle: 'Sonido del temporizador', timerSoundDescription: 'El sonido elegido se aplica a los temporizadores de cuidado.', soundLabel: 'Sonido', soundClassic: 'Clásico', soundDigital: 'Digital', soundSoft: 'Suave', soundBell: 'Campana', testSound: 'Probar sonido', soundPlayed: 'Prueba reproducida. Ajusta el volumen multimedia si no la escuchas.',
@@ -74,6 +76,8 @@ export const textoApp = {
     calendar: 'dddd, d MMMM',
   },
   en: {
+    a11yBrightnessHint: 'Adjusts Mi Jardín brightness. Physical brightness is changed from iPhone Control Center.',
+    showPassword: 'Show password', hidePassword: 'Hide password',
     tagline: 'Your botanical companion', hello: 'Hello', logout: 'Sign out', navLabel: 'Mi Jardín sections',
     navHome: 'Home', navPlants: 'My plants', navIdentify: 'Identify', navWater: 'Watering', navHistory: 'History', navReminders: 'Reminders', navMenu: 'Menu',
     homeEyebrow: 'YOUR GREEN SPACE', homeTitle: 'Overview', addPlant: 'Add plant', plants: 'Plants', nextWatering: 'Next watering',
@@ -90,7 +94,7 @@ export const textoApp = {
     noRepeat: 'Does not repeat', daily: 'Daily', weekly: 'Weekly', biweekly: 'Every two weeks', monthly: 'Monthly', saveReminder: 'Save reminder',
     fertilization: 'Fertilization', pruning: 'Pruning', transplant: 'Transplant',
     backToPlants: 'Back to my plants', profileEyebrow: 'YOUR ACCOUNT', profileTitle: 'My profile', profileIntro: 'Manage your garden information and preferences.',
-    appearanceTitle: 'Appearance and language', personalize: 'PERSONALIZE', makeItYours: 'Make this space feel like yours.', themeLabel: 'App theme', lightMode: 'Light', darkMode: 'Dark', systemMode: 'System', systemThemeHint: 'Follow your device appearance.', languageLabel: 'Language', spanish: 'Español', english: 'English',
+    appearanceTitle: 'Appearance and language', personalize: 'PERSONALIZE', makeItYours: 'Make this space feel like yours.', themeLabel: 'App theme', lightMode: 'Light', darkMode: 'Dark', systemMode: 'System', systemThemeHint: 'Follow your device appearance.', languageLabel: 'Language', spanish: 'Español', english: 'English', menuAccessibility: 'Accessibility', a11yTitle: 'Accessibility', a11yIntro: 'Customize how the app looks and reads.', a11yBrightness: 'Brightness', a11yFont: 'Font', a11yFontStandard: 'Standard', a11yFontReadable: 'High readability', a11yFontSpaced: 'Spaced', a11ySize: 'Text size', a11yNormal: 'Normal', a11yLarge: 'Large', a11yExtra: 'Extra large', a11yBold: 'Bold text', a11yContrast: 'High contrast', a11ySounds: 'Sounds', a11yNarrator: 'Screen reader', a11yTestSound: 'Test sound', a11yReset: 'Reset values',
     gardenAccountTitle: 'Your garden', plantsInCollection: 'plants in your collection.', onlineSyncText: 'Your collection and care records sync with your account when connected.', offlineSyncText: 'Offline: changes are saved on this device and will sync when the connection returns.',
     backupTitle: 'Garden backup', backupIntro: 'Export plants, care records, and pending reminders or restore a JSON backup. Photos are not included.', exportGarden: 'Export my garden', importBackup: 'Import JSON backup', backupExported: 'Backup downloaded.', backupImported: 'Backup imported: {plants} plants, {care} care records, and {reminders} reminders.', invalidBackup: 'This file is not a valid Mi Jardín backup.', backupFailed: 'Could not process the backup: {error}',
     timerSoundTitle: 'Timer sound', timerSoundDescription: 'The selected sound is used by care timers.', soundLabel: 'Sound', soundClassic: 'Classic', soundDigital: 'Digital', soundSoft: 'Soft', soundBell: 'Bell', testSound: 'Test sound', soundPlayed: 'Sound played. Adjust your media volume if you cannot hear it.',

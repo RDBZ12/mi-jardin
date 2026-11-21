@@ -4,6 +4,7 @@ import { importarRegistroCuidado, obtenerHistorialCuidados } from "../servicios/
 import { obtenerRecordatoriosPendientes, importarRecordatorio } from "../servicios/recordatorios.js?perfil-respaldo-v2";
 // El módulo de recordatorios aporta importarRecordatorio para restaurar respaldos.
 import { limpiarEntrada } from "../utils/dom.js";
+import { inicializarCamposClave } from '../componentes/campoClave.js';
 
 export function inicializarPerfil(contexto) {
   const formPerfil = document.querySelector("#form-perfil");
@@ -17,27 +18,7 @@ export function inicializarPerfil(contexto) {
   const perfilContrasenaError = document.querySelector("#perfil-contrasena-error");
   const perfilContrasenaMessage = document.querySelector("#perfil-contrasena-message");
   const perfilContrasenaGuardar = document.querySelector("#perfil-contrasena-guardar");
-  [perfilContrasenaNueva, perfilContrasenaConfirmar].forEach((input) => {
-    const caja = document.createElement("span");
-    caja.className = "password-box";
-    input.parentElement.insertBefore(caja, input);
-    caja.append(input);
-
-    const boton = document.createElement("button");
-    boton.type = "button";
-    boton.className = "password-toggle";
-    boton.setAttribute("aria-label", "Mostrar contraseña");
-    boton.title = "Mostrar contraseña";
-    boton.setAttribute("aria-controls", input.id);
-    boton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>';
-    boton.addEventListener("click", () => {
-      const mostrar = input.type === "password";
-      input.type = mostrar ? "text" : "password";
-      boton.setAttribute("aria-label", mostrar ? "Ocultar contraseña" : "Mostrar contraseña");
-      boton.title = boton.getAttribute("aria-label");
-    });
-    caja.append(boton);
-  });
+  inicializarCamposClave(document);
   const perfilRespaldoError = document.querySelector("#perfil-respaldo-error");
   const perfilRespaldoMensaje = document.querySelector("#perfil-respaldo-mensaje");
 document.querySelector('#perfil-exportar').addEventListener('click', async () => {
