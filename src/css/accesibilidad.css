@@ -1,5 +1,5 @@
 :root { --a11y-brightness: 1; --a11y-font-family: 'DM Sans', sans-serif; }
-#vista-auth, .app-main { filter: brightness(var(--a11y-brightness)); }
+#vista-auth, .app-main > .app-page { filter: brightness(var(--a11y-brightness)); }
 html[data-a11y-fuente='legible'] body, html[data-a11y-fuente='espaciada'] body { font-family: var(--a11y-font-family); }
 html[data-a11y-tamano='grande'] { font-size: 112%; }
 html[data-a11y-tamano='extra'] { font-size: 125%; }
