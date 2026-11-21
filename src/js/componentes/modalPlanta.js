@@ -16,6 +16,7 @@ export function abrirModalPlanta(plantaEditar = null, opciones = {}) {
   if (!modalPlanta) return;
   modalPantallaCompleta = Boolean(opciones.pantallaCompleta);
   modalPlanta.classList.toggle('modal-planta-fullscreen', modalPantallaCompleta);
+  document.querySelector('#vista-app')?.classList.toggle('modal-planta-activa', modalPantallaCompleta);
   if (modalPantallaCompleta) contextoModal.navegarA('inicio', 'inicio');
   errorPlanta.textContent = '';
   formPlanta.reset();
@@ -36,6 +37,7 @@ export function cerrarModalPlanta() {
   if (!modalPlanta) return;
   modalPlanta.classList.add('oculto');
   modalPlanta.classList.remove('modal-planta-fullscreen');
+  document.querySelector('#vista-app')?.classList.remove('modal-planta-activa');
   const volverAInicio = modalPantallaCompleta;
   modalPantallaCompleta = false;
   errorPlanta.textContent = '';

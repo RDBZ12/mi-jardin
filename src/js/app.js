@@ -186,6 +186,8 @@ inicializarMenu(contexto);
 inicializarAccesibilidad();
 
 function cambiarVista(nombre, pestaña = nombre) {
+  const modalAbierto = document.querySelector('#modal-planta:not(.oculto)');
+  if (modalAbierto) contexto.cerrarModalPlanta?.();
   if (!rutasPersistibles.has(nombre)) nombre = 'inicio';
   vistaActual = nombre;
   pestanaActiva = pestaña;
