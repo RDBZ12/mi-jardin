@@ -10,7 +10,10 @@ export function crearTarjetaAccesibilidad() {
   const fila = document.createElement('button');
   fila.className = 'menu-fila'; fila.type = 'button'; fila.dataset.subvista = 'sub-accesibilidad';
   fila.innerHTML = '<span class="menu-fila-icono" aria-hidden="true">◉</span><span data-i18n="menu_accesibilidad">Accesibilidad</span><span class="menu-fila-flecha" aria-hidden="true">›</span>';
-  document.querySelector('#menu-lista-principal .menu-lista')?.append(fila);
+  const listaMenu = document.querySelector('#menu-lista-principal .menu-lista');
+  const botonCerrarSesion = listaMenu?.querySelector('#btn-menu-salir');
+  if (listaMenu && botonCerrarSesion) listaMenu.insertBefore(fila, botonCerrarSesion);
+  else listaMenu?.append(fila);
   const tarjeta = document.createElement('section');
   tarjeta.className = 'profile-card subvista oculto';
   tarjeta.id = 'sub-accesibilidad';
