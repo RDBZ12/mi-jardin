@@ -37,9 +37,10 @@ function guardar() { localStorage.setItem(CLAVE, JSON.stringify(preferencias)); 
 
 function aplicarVisual() {
   const raiz = document.documentElement;
-  raiz.style.setProperty('--a11y-brightness', String(preferencias.brillo / 100));
-  raiz.style.setProperty('--a11y-dim-opacity', String(Math.max(0, 1 - (preferencias.brillo / 100))));
-  raiz.dataset.a11yBrilloModo = preferencias.brillo < 100 ? 'oscuro' : 'normal';
+  const nivelBrillo = preferencias.brillo / 100;
+  raiz.style.setProperty('--a11y-brightness', String(nivelBrillo));
+  raiz.style.setProperty('--a11y-overlay-color', nivelBrillo < 1 ? '#000' : '#fff');
+  raiz.style.setProperty('--a11y-overlay-opacity', String(nivelBrillo < 1 ? 1 - nivelBrillo : Math.min(.24, (nivelBrillo - 1) / nivelBrillo)));
   raiz.style.setProperty('--a11y-font-family', FUENTES[preferencias.fuente] || FUENTES.estandar);
   raiz.dataset.a11yFuente = preferencias.fuente;
   raiz.dataset.a11yTamano = preferencias.tamano;
