@@ -6,6 +6,11 @@ import { crearTarjetaPlanta } from '../componentes/tarjetaPlanta.js';
 export function renderizarInicio(contexto) {
   const { plantas } = contexto.obtenerEstado();
   const { tApp, crearElemento, formatoFecha, tarjetasPara } = contexto;
+  const usuario = contexto.obtenerSesionOffline?.();
+  const nombre = usuario?.user_metadata?.nombre_completo || usuario?.user_metadata?.full_name || usuario?.user_metadata?.username || usuario?.email?.split('@')[0] || 'Mi Jardín';
+  const iniciales = nombre.trim().split(/\s+/).slice(0, 2).map((parte) => parte[0]).join('').toUpperCase() || 'MJ';
+  const avatar = document.querySelector('#inicio-avatar-usuario');
+  if (avatar) { avatar.textContent = iniciales; avatar.setAttribute('aria-label', `Abrir perfil de ${nombre}`); }
   document.querySelector('#dashboard-plant-count').textContent = String(plantas.length);
   const proximos = plantas
     .map((planta) => ({ planta, fecha: fechaProximoRiego(planta) }))
@@ -43,6 +48,20 @@ export function renderizarInicio(contexto) {
 }
 
 export function inicializarInicio(contexto) {
+  const encabezado = document.querySelector('#pagina-inicio .plants-heading');
+  if (encabezado && !document.querySelector('#inicio-avatar-usuario')) {
+    const avatar = document.createElement('button');
+    avatar.id = 'inicio-avatar-usuario';
+    avatar.className = 'avatar-usuario';
+    avatar.type = 'button';
+    avatar.textContent = 'MJ';
+    avatar.setAttribute('aria-label', 'Abrir mi perfil');
+    encabezado.append(avatar);
+    avatar.addEventListener('click', () => {
+      contexto.navegarA('menu', 'menu');
+      document.querySelector('[data-subvista="sub-perfil"]')?.click();
+    });
+  }
   const botonAgregar = document.querySelector('#inicio-nueva-planta');
   botonAgregar?.addEventListener('click', () => contexto.abrirModalPlanta(null, { pantallaCompleta: true }));
   const contenedor = document.querySelector('#inicio-plantas');
