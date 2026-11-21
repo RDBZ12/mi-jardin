@@ -10,9 +10,13 @@ let botonGuardarPlanta;
 let fotoSeleccionada;
 let fotoPreview;
 let fotoPreviewUrl;
+let modalPantallaCompleta = false;
 
-export function abrirModalPlanta(plantaEditar = null) {
+export function abrirModalPlanta(plantaEditar = null, opciones = {}) {
   if (!modalPlanta) return;
+  modalPantallaCompleta = Boolean(opciones.pantallaCompleta);
+  modalPlanta.classList.toggle('modal-planta-fullscreen', modalPantallaCompleta);
+  if (modalPantallaCompleta) contextoModal.navegarA('inicio', 'inicio');
   errorPlanta.textContent = '';
   formPlanta.reset();
   fotoSeleccionada = null;
@@ -31,11 +35,15 @@ export function abrirModalPlanta(plantaEditar = null) {
 export function cerrarModalPlanta() {
   if (!modalPlanta) return;
   modalPlanta.classList.add('oculto');
+  modalPlanta.classList.remove('modal-planta-fullscreen');
+  const volverAInicio = modalPantallaCompleta;
+  modalPantallaCompleta = false;
   errorPlanta.textContent = '';
   formPlanta.reset();
   document.querySelector('#planta-id').value = '';
   fotoSeleccionada = null;
   actualizarPreview(null);
+  if (volverAInicio) contextoModal.navegarA('inicio', 'inicio');
 }
 
 function actualizarPreview(archivo) {
@@ -78,7 +86,17 @@ export function inicializarModalPlanta(contexto) {
   contexto.abrirModalPlanta = abrirModalPlanta;
   contexto.cerrarModalPlanta = cerrarModalPlanta;
 
-  document.querySelector('#btn-cerrar-modal')?.addEventListener('click', cerrarModalPlanta);
+  const flecha = document.createElement('button');
+  flecha.id = 'btn-volver-planta';
+  flecha.type = 'button';
+  flecha.className = 'text-action modal-back-arrow';
+  flecha.setAttribute('aria-label', 'Volver al inicio');
+  flecha.title = 'Volver al inicio';
+  flecha.textContent = '←';
+  document.querySelector('#modal-planta .modal-heading')?.prepend(flecha);
+
+  document.querySelector('#btn-cerrar-modal')?.remove();
+  flecha.addEventListener('click', cerrarModalPlanta);
   document.querySelector('#btn-cancelar-modal')?.addEventListener('click', cerrarModalPlanta);
   modalPlanta?.addEventListener('click', (evento) => {
     if (evento.target === modalPlanta) cerrarModalPlanta();
