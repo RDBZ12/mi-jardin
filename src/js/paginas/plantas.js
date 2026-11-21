@@ -166,4 +166,4 @@ export function inicializarPlantas(contexto) {
   });
 }
 
-export const vistaDetalle = "<section class=\"app-page oculto\" id=\"pagina-detalle\" data-pagina=\"detalle\">\n          <button class=\"text-action back-action\" id=\"detalle-volver\" type=\"button\">Volver a mis plantas</button>\n          <div id=\"detalle-contenido\"></div>\n        </section>";
+export const vistaDetalle = "<section class=\"app-page oculto\" id=\"pagina-detalle\" data-pagina=\"detalle\">\n          <button class=\"text-action back-action menu-back-arrow\" id=\"detalle-volver\" type=\"button\" data-i18n-aria-label=\"backToPlants\" aria-label=\"Volver a mis plantas\" title=\"Volver a mis plantas\"><span aria-hidden=\"true\">←</span></button>\n          <div id=\"detalle-contenido\"></div>\n        </section>";

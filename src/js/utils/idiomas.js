@@ -245,7 +245,7 @@ export function traducirDashboard() {
     ['#pagina-identificar .page-intro', 'identifyIntro'], ['#identify-save', 'saveToPlants'],
     ['#pagina-historial .section-eyebrow', 'activity'], ['#pagina-historial .plants-heading h1', 'historyTitle'],
     ['#pagina-recordatorios .section-eyebrow', 'planning'], ['#pagina-recordatorios .plants-heading h1', 'remindersTitle'],
-    ['#reminder-create-toggle', 'newReminder'], ['#detalle-volver', 'backToPlants'],
+    ['#reminder-create-toggle', 'newReminder'],
     ['#sub-perfil .section-eyebrow', 'profileEyebrow'], ['#pagina-perfil .plants-heading h1', 'navMenu'],
     ['#pagina-perfil .page-intro', 'profileIntro'], ['#perfil-guardar', 'saveChanges'],
     ['#perfil-preferencias-titulo', 'appearanceTitle'], ['#perfil-cuenta-titulo', 'gardenAccountTitle'],
@@ -258,6 +258,12 @@ export function traducirDashboard() {
     ['#btn-cancelar-modal', 'cancel'], ['#btn-guardar-planta', 'savePlant'],
   ];
   for (const [selector, clave] of textos) ponerTexto(selector, clave);
+  const detalleVolver = document.querySelector('#detalle-volver');
+  if (detalleVolver) {
+    const etiqueta = tApp('backToPlants');
+    detalleVolver.setAttribute('aria-label', etiqueta);
+    detalleVolver.setAttribute('title', etiqueta);
+  }
   const camposContrasena = [
     ['#form-cambiar-contrasena label[for="perfil-contrasena-nueva"] span', 'newPassword'],
     ['#form-cambiar-contrasena label[for="perfil-contrasena-confirmar"] span', 'confirmPassword'],
