@@ -102,7 +102,7 @@ async function abrirDetalle(contexto, plantaId) {
 
 export function inicializarPlantas(contexto) {
   contexto.abrirDetalle = (id) => abrirDetalle(contexto, id);
-  document.querySelector('#btn-abrir-modal')?.addEventListener('click', () => contexto.abrirModalPlanta());
+  document.querySelector('#btn-abrir-modal')?.addEventListener('click', () => contexto.abrirModalPlanta(null, { pantallaCompleta: true, ruta: 'plantas', pestana: 'plantas' }));
   document.querySelector('#plant-search').addEventListener('input', () => renderizarPlantas(contexto));
   document.querySelectorAll('[data-categoria]').forEach((boton) => boton.addEventListener('click', () => {
     filtroCategoria = boton.dataset.categoria;

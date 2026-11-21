@@ -44,6 +44,7 @@ export function renderizarInicio(contexto) {
 
 export function inicializarInicio(contexto) {
   const botonAgregar = document.querySelector('#inicio-nueva-planta');
+  document.querySelector('#pagina-inicio .home-plants-heading')?.append(botonAgregar);
   botonAgregar?.addEventListener('click', () => contexto.abrirModalPlanta(null, { pantallaCompleta: true }));
   const contenedor = document.querySelector('#inicio-plantas');
   contenedor.addEventListener('click', async (evento) => {

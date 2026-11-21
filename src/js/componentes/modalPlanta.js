@@ -11,13 +11,17 @@ let fotoSeleccionada;
 let fotoPreview;
 let fotoPreviewUrl;
 let modalPantallaCompleta = false;
+let rutaRegresoModal = 'inicio';
+let pestanaRegresoModal = 'inicio';
 
 export function abrirModalPlanta(plantaEditar = null, opciones = {}) {
   if (!modalPlanta) return;
   modalPantallaCompleta = Boolean(opciones.pantallaCompleta);
+  rutaRegresoModal = opciones.ruta || 'inicio';
+  pestanaRegresoModal = opciones.pestana || rutaRegresoModal;
   modalPlanta.classList.toggle('modal-planta-fullscreen', modalPantallaCompleta);
   document.querySelector('#vista-app')?.classList.toggle('modal-planta-activa', modalPantallaCompleta);
-  if (modalPantallaCompleta) contextoModal.navegarA('inicio', 'inicio');
+  if (modalPantallaCompleta) contextoModal.navegarA(rutaRegresoModal, pestanaRegresoModal);
   errorPlanta.textContent = '';
   formPlanta.reset();
   fotoSeleccionada = null;
@@ -38,14 +42,16 @@ export function cerrarModalPlanta() {
   modalPlanta.classList.add('oculto');
   modalPlanta.classList.remove('modal-planta-fullscreen');
   document.querySelector('#vista-app')?.classList.remove('modal-planta-activa');
-  const volverAInicio = modalPantallaCompleta;
+  const volverA = modalPantallaCompleta;
+  const rutaRegreso = rutaRegresoModal;
+  const pestanaRegreso = pestanaRegresoModal;
   modalPantallaCompleta = false;
   errorPlanta.textContent = '';
   formPlanta.reset();
   document.querySelector('#planta-id').value = '';
   fotoSeleccionada = null;
   actualizarPreview(null);
-  if (volverAInicio) contextoModal.navegarA('inicio', 'inicio');
+  if (volverA) contextoModal.navegarA(rutaRegreso, pestanaRegreso);
 }
 
 function actualizarPreview(archivo) {
