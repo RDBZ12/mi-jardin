@@ -2,6 +2,7 @@
   "name": "Mi Jardín",
   "short_name": "Mi Jardín",
   "description": "Organiza las plantas y sus cuidados.",
+  "id": "./",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
@@ -9,6 +10,7 @@
   "orientation": "portrait",
   "background_color": "#f4f7f2",
   "theme_color": "#2e6f40",
+  "categories": ["lifestyle", "education"],
   "icons": [
     {
       "src": "./icons/icon-192.png",

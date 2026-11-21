@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mi-jardin-shell-v5';
+const CACHE_NAME = 'mi-jardin-shell-v6';
 const APP_ROOT = new URL('./', self.registration.scope);
 const SHELL_FILES = ['manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png']
   .map((ruta) => new URL(ruta, APP_ROOT).href);
