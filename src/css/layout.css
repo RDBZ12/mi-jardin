@@ -66,6 +66,7 @@ html[data-theme='dark'] .nav-item.activo { background: #18261e; color: #f0f4f1; 
 .app-main { grid-column: 2; grid-row: 1; width: min(100% - 56px, 1120px); margin: 0 auto; padding: 38px 0 calc(72px + env(safe-area-inset-bottom)); }
 .app-page { min-width: 0; overflow-wrap: anywhere; }
 .modal-planta-activa .fab-add-plant { display: none !important; }
+.teclado-abierto .app-nav { visibility: hidden; pointer-events: none; }
 @media (max-width: 768px) {
 .app-view { display: block; min-height: 100vh; min-height: 100svh; min-height: 100dvh; }
 .app-header { position: sticky; min-height: 68px; gap: 8px; padding: calc(10px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) 10px calc(12px + env(safe-area-inset-left)); }
