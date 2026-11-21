@@ -41,10 +41,10 @@
         --link: #b6e3b4;
       }
       * { box-sizing: border-box; }
-      body { min-width: 320px; min-height: 100vh; margin: 0; background: var(--page); color: var(--text); transition: background-color .2s ease, color .2s ease; }
+      body { min-width: 320px; min-height: 100vh; min-height: 100dvh; margin: 0; background: var(--page); color: var(--text); transition: background-color .2s ease, color .2s ease; }
       button, input { font: inherit; }
       button { cursor: pointer; }
-      .layout { display: grid; min-height: 100vh; min-height: 100svh; grid-template-columns: minmax(320px, .92fr) 1.08fr; }
+      .layout { display: grid; min-height: 100vh; min-height: 100svh; min-height: 100dvh; grid-template-columns: minmax(320px, .92fr) 1.08fr; }
       .visual { display: flex; min-height: 100vh; flex-direction: column; justify-content: space-between; padding: 38px clamp(28px, 5vw, 72px); color: #fff; background: linear-gradient(180deg, rgba(20,45,34,.08), rgba(20,45,34,.66)), url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1400&q=85') center / cover; }
       .brand { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 700; letter-spacing: .04em; }
       .brand-mark { display: grid; width: 36px; aspect-ratio: 1; place-items: center; border: 1px solid rgba(255,255,255,.7); border-radius: 50%; font-family: 'Playfair Display', serif; font-size: 19px; }
@@ -107,13 +107,13 @@
       .footer { margin: 14px 0 0; color: var(--muted); font-size: 12px; text-align: center; }
       .footer .text-button { margin-left: 7px; font-size: 12px; }
       @media (max-width: 760px) {
-        .layout { grid-template-columns: 1fr; }
-        .visual { min-height: 250px; padding: 24px; }
-        .visual-copy { padding: 30px 0 3px; }
-        .visual-copy h2 { font-size: 38px; }
-        .visual-copy span { margin-top: 10px; font-size: 14px; }
-        .panel { min-height: 600px; padding: 78px 22px 35px; }
-        .top-actions { top: 18px; right: 22px; }
+        .layout { display: flex; min-height: 100vh; min-height: 100dvh; flex-direction: column; }
+        .visual { min-height: clamp(150px, 21dvh, 190px); flex: 0 0 auto; padding: calc(14px + env(safe-area-inset-top)) 22px 12px; }
+        .visual-copy { padding: 10px 0 0; }
+        .visual-copy h2 { font-size: 34px; }
+        .visual-copy span { margin-top: 8px; font-size: 13px; line-height: 1.45; }
+        .panel { min-height: 0; flex: 1 0 auto; padding: 64px 22px calc(22px + env(safe-area-inset-bottom)); }
+        .top-actions { top: 12px; right: 22px; }
       }
       @media (max-width: 420px) { .panel { padding-right: 20px; padding-left: 20px; } h1 { font-size: 30px; } }
       @media (max-width: 760px) { input, select, textarea { font-size: 16px; } }
