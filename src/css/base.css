@@ -41,6 +41,7 @@
         --link: #b6e3b4;
       }
       * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
       body { min-width: 320px; min-height: 100vh; min-height: 100dvh; margin: 0; background: var(--page); color: var(--text); transition: background-color .2s ease, color .2s ease; }
       button, input { font: inherit; }
       button { cursor: pointer; }
