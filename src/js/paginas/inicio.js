@@ -58,6 +58,7 @@ export function inicializarInicio(contexto) {
     avatar.setAttribute('aria-label', 'Abrir mi perfil');
     encabezado.append(avatar);
     avatar.addEventListener('click', () => {
+      localStorage.setItem('mi-jardin-perfil-atajo-origen', 'inicio');
       contexto.navegarA('menu', 'menu');
       document.querySelector('[data-subvista="sub-perfil"]')?.click();
     });

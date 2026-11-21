@@ -17,6 +17,11 @@ export function inicializarMenu(contexto) {
   document.querySelectorAll('[data-ir-pagina]').forEach((boton) => boton.addEventListener('click', () => {
     contexto.navegarA(boton.dataset.irPagina, 'menu');
   }));
+  document.querySelectorAll('[data-volver="menu-lista-principal"]').forEach((boton) => boton.addEventListener('click', () => {
+    if (localStorage.getItem('mi-jardin-perfil-atajo-origen') !== 'inicio') return;
+    localStorage.removeItem('mi-jardin-perfil-atajo-origen');
+    window.setTimeout(() => contexto.navegarA('inicio', 'inicio'), 0);
+  }));
   document.querySelectorAll('[data-volver-menu]').forEach((boton) => boton.addEventListener('click', () => {
     document.querySelectorAll('.subvista').forEach((subvista) => subvista.classList.add('oculto'));
     document.querySelector('#menu-lista-principal').classList.remove('oculto');
