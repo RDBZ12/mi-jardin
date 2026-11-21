@@ -10,6 +10,7 @@ const TIPOS_CUIDADO = new Set([
   'limpieza',
   'control_plagas',
   'cambio_ubicacion',
+  'revision',
   'otro',
 ]);
 
@@ -24,7 +25,10 @@ function obtenerCliente() {
   return supabase;
 }
 
-export async function registrarCuidado(plantaId, tipo = 'riego', notas = '') {
+const ESTADOS_SALUD = new Set(['bien', 'regular', 'mal']);
+
+// opciones.estadoSalud: 'bien' | 'regular' | 'mal'  ·  opciones.foto: File (opcional)
+export async function registrarCuidado(plantaId, tipo = 'riego', notas = '', opciones = {}) {
   const cliente = obtenerCliente();
   const usuario = await obtenerUsuarioDeSesion();
   if (!usuario) throw new Error('Inicia sesión con internet antes de guardar cuidados offline.');
@@ -32,13 +36,22 @@ export async function registrarCuidado(plantaId, tipo = 'riego', notas = '') {
   const tipoNormalizado = tipo === 'fertilizante' ? 'fertilizacion' : tipo;
   if (!TIPOS_CUIDADO.has(tipoNormalizado)) throw new Error('Tipo de cuidado no válido');
 
+  const estadoSalud = opciones.estadoSalud || null;
+  if (estadoSalud && !ESTADOS_SALUD.has(estadoSalud)) throw new Error('Estado de salud no válido');
+  const foto = opciones.foto || null;
+
+  const id = crypto.randomUUID();
+  const extension = foto?.name?.match(/\.([a-z0-9]+)$/i)?.[1]?.toLowerCase() || 'jpg';
   const registro = {
-    id: crypto.randomUUID(),
+    id,
     usuario_id: usuario.id,
     planta_id: plantaId,
     tipo: tipoNormalizado,
     observaciones: notas || null,
     fecha_hora: new Date().toISOString(),
+    estado_salud: estadoSalud,
+    foto_ruta: foto ? `${usuario.id}/cuidados/${id}.${extension}` : null,
+    foto_local_blob: foto,
     _offline: !navigator.onLine,
   };
   const cacheCuidados = await leerCacheLocal(usuario.id, 'registros_cuidado');
@@ -51,12 +64,32 @@ export async function registrarCuidado(plantaId, tipo = 'riego', notas = '') {
     )));
   }
 
+  if (estadoSalud) {
+    // Refleja de inmediato el estado en la planta (el servidor lo recalcula al sincronizar).
+    const plantas = await leerCacheLocal(usuario.id, 'plantas');
+    await guardarCacheLocal(usuario.id, 'plantas', plantas.map((planta) => (
+      planta.id === plantaId
+        ? { ...planta, estado_salud: estadoSalud, ultima_revision: registro.fecha_hora }
+        : planta
+    )));
+  }
+
   await encolarOperacion(usuario.id, {
     tabla: 'registros_cuidado',
     accion: 'upsert',
     payload: registro,
+    archivoFoto: foto,
   });
-  if (navigator.onLine) void sincronizarPendientes(usuario.id);
+  if (navigator.onLine) {
+    // Las revisiones esperan a sincronizar para que la pantalla ya lea el estado nuevo del servidor.
+    const sincronizacion = (async () => {
+      let resultado = await sincronizarPendientes(usuario.id);
+      // Si ya había una sincronización en curso, puede no haber incluido este registro.
+      if (resultado.pendientes && navigator.onLine) resultado = await sincronizarPendientes(usuario.id);
+      return resultado;
+    })();
+    if (estadoSalud) await sincronizacion; else void sincronizacion;
+  }
 
   return registro;
 }

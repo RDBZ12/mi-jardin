@@ -190,10 +190,11 @@ inicializarBarraInferior();
 function cambiarVista(nombre, pestaña = nombre) {
   const modalAbierto = document.querySelector('#modal-planta:not(.oculto)');
   if (modalAbierto) contexto.cerrarModalPlanta?.();
-  if (!rutasPersistibles.has(nombre)) nombre = 'inicio';
+  if (!rutasPersistibles.has(nombre) && nombre !== 'detalle') nombre = 'inicio';
   vistaActual = nombre;
   pestanaActiva = pestaña;
-  localStorage.setItem('mi-jardin-vista-activa', nombre);
+  // El detalle necesita una planta elegida: al recargar se vuelve a la lista.
+  localStorage.setItem('mi-jardin-vista-activa', nombre === 'detalle' ? 'plantas' : nombre);
   for (const pagina of paginas) pagina.classList.toggle('oculto', pagina.dataset.pagina !== nombre);
   for (const boton of botonesNavegacion) {
     const activo = boton.dataset.ruta === pestaña;
@@ -241,8 +242,10 @@ async function cargarJardin() {
   mostrarMensajeDashboard(tApp('loadingPlants'));
 
   try {
-    plantasActuales = await cargarEstadoJardin();
+    const plantasCargadas = await cargarEstadoJardin();
+    // Una carga vieja que termina tarde no debe pisar los datos de una más reciente.
     if (carga !== cargaActual || vistaApp.classList.contains('oculto')) return;
+    plantasActuales = plantasCargadas;
 
     actualizarResumenPerfil();
     mostrarMensajeDashboard('');

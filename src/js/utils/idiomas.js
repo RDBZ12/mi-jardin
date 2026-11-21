@@ -27,6 +27,14 @@ export const textoApp = {
     changePassword: 'Cambiar contraseña', newPassword: 'Contraseña nueva', confirmPassword: 'Confirmar contraseña', passwordHelp: 'Elige una contraseña segura de al menos 8 caracteres.', updatePassword: 'Actualizar contraseña', passwordMismatch: 'Las contraseñas no coinciden.', passwordUpdated: 'Contraseña actualizada.', passwordUpdateError: 'No se pudo actualizar la contraseña: {error}', passwordOffline: 'Conéctate a internet para cambiar la contraseña.',
     garden: 'TU JARDÍN', addPlantTitle: 'Agregar una planta', editPlant: 'Editar planta', closeForm: 'Cerrar formulario', scientificName: 'Nombre científico', category: 'Categoría',
     waterEvery: 'Riego cada (días)', notes: 'Notas de cuidado', notesPlaceholder: 'Luz, sustrato u otros detalles', cancel: 'Cancelar', savePlant: 'Guardar planta',
+    actionError: 'No se pudo completar la acción: {error}',
+    healthGood: 'Bien', healthFair: 'Regular', healthBad: 'Mal', healthLabel: 'Salud', notReviewed: 'Sin revisar',
+    review: 'Revisión', reviewPlant: 'Revisar salud', howIsPlant: '¿Cómo está hoy?', reviewNote: 'Nota', reviewNotePlaceholder: 'Hojas, color, plagas, humedad…',
+    reviewPhoto: 'Foto', saveReview: 'Guardar revisión', reviewSaved: 'Revisión guardada.', chooseHealth: 'Elige cómo está la planta.', reviewSaveError: 'No se pudo guardar la revisión: {error}',
+    timelineTitle: 'Seguimiento', noTimeline: 'Aún no hay registros para esta planta.', loadingTimeline: 'Cargando seguimiento…', lastReview: 'Última revisión {date}',
+    needsAttention: 'Necesitan atención', allGood: 'Todo en orden. Tus plantas están al día.', attentionCount: '{count} requieren atención', attentionOne: '1 requiere atención',
+    reasonOverdue: 'Riego atrasado {days} d', reasonBad: 'Se ve mal', reasonFair: 'Salud regular', reasonStale: 'Sin revisar hace {days} d', reasonNever: 'Aún sin revisar',
+    weekTitle: 'Esta semana', weekSummary: '{water} riegos · {reviews} revisiones · {other} otros cuidados', reviewNow: 'Revisar',
     plant: 'Planta', noPhoto: 'Sin foto', details: 'Detalles', delete: 'Eliminar', waterNow: '💧 Regar ahora',
     loadingPlants: 'Cargando tus plantas…', loadPlantsError: 'No se pudieron cargar las plantas: {error}',
     emptyGardenTitle: 'Tu jardín empieza aquí', emptyGardenText: 'Agrega tu primera planta para llevar un registro de sus cuidados.',
@@ -103,6 +111,14 @@ export const textoApp = {
     changePassword: 'Change password', newPassword: 'New password', confirmPassword: 'Confirm password', passwordHelp: 'Choose a secure password with at least 8 characters.', updatePassword: 'Update password', passwordMismatch: 'The passwords do not match.', passwordUpdated: 'Password updated.', passwordUpdateError: 'Could not update the password: {error}', passwordOffline: 'Connect to the internet to change your password.',
     garden: 'YOUR GARDEN', addPlantTitle: 'Add a plant', editPlant: 'Edit plant', closeForm: 'Close form', scientificName: 'Scientific name', category: 'Category',
     waterEvery: 'Water every (days)', notes: 'Care notes', notesPlaceholder: 'Light, soil, or other details', cancel: 'Cancel', savePlant: 'Save plant',
+    actionError: 'The action could not be completed: {error}',
+    healthGood: 'Good', healthFair: 'Fair', healthBad: 'Poor', healthLabel: 'Health', notReviewed: 'Not reviewed',
+    review: 'Check-up', reviewPlant: 'Check health', howIsPlant: 'How is it today?', reviewNote: 'Note', reviewNotePlaceholder: 'Leaves, color, pests, moisture…',
+    reviewPhoto: 'Photo', saveReview: 'Save check-up', reviewSaved: 'Check-up saved.', chooseHealth: 'Choose how the plant is doing.', reviewSaveError: 'Could not save the check-up: {error}',
+    timelineTitle: 'Tracking', noTimeline: 'No records for this plant yet.', loadingTimeline: 'Loading tracking…', lastReview: 'Last check-up {date}',
+    needsAttention: 'Need attention', allGood: 'All good. Your plants are up to date.', attentionCount: '{count} need attention', attentionOne: '1 needs attention',
+    reasonOverdue: 'Watering overdue {days} d', reasonBad: 'Looks poor', reasonFair: 'Fair health', reasonStale: 'Not checked for {days} d', reasonNever: 'Not checked yet',
+    weekTitle: 'This week', weekSummary: '{water} waterings · {reviews} check-ups · {other} other care', reviewNow: 'Check',
     plant: 'Plant', noPhoto: 'No photo', details: 'Details', delete: 'Delete', waterNow: '💧 Water now',
     loadingPlants: 'Loading your plants…', loadPlantsError: 'Could not load plants: {error}',
     emptyGardenTitle: 'Your garden starts here', emptyGardenText: 'Add your first plant to keep track of its care.',
@@ -177,8 +193,13 @@ export function traduccionLuz(luz) {
 }
 
 export function traduccionTipo(tipo) {
-  const claves = { riego: 'watering', fertilizacion: 'fertilization', poda: 'pruning', trasplante: 'transplant', limpieza: 'cleaning', control_plagas: 'pestControl', cambio_ubicacion: 'changeLocation', otro: 'otherCare' };
+  const claves = { riego: 'watering', fertilizacion: 'fertilization', poda: 'pruning', trasplante: 'transplant', limpieza: 'cleaning', control_plagas: 'pestControl', cambio_ubicacion: 'changeLocation', revision: 'review', otro: 'otherCare' };
   return claves[tipo] ? tApp(claves[tipo]) : tipo || tApp('plantFallback');
+}
+
+export function traduccionSalud(estado) {
+  const claves = { bien: 'healthGood', regular: 'healthFair', mal: 'healthBad' };
+  return claves[estado] ? tApp(claves[estado]) : tApp('notReviewed');
 }
 
 export function traduccionRepeticion(repeticion) {

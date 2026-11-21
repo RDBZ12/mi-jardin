@@ -1,6 +1,6 @@
 import { vistaAutenticacion } from './autenticacionVista.js';
 import { vistaInicio } from './inicio.js';
-import { vistaPlantas } from './plantas.js';
+import { vistaPlantas, vistaDetalle } from './plantas.js';
 import { vistaRiego } from './riego.js';
 import { vistaRecordatorios } from './recordatorios.js';
 import { vistaIdentificar } from './identificar.js';
@@ -21,6 +21,7 @@ if (contenedorVistas) {
   contenedorVistas.innerHTML = [
     vistaInicio,
     vistaPlantas,
+    vistaDetalle,
     vistaRiego,
     vistaIdentificar,
     vistaHistorial,

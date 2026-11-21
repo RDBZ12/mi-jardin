@@ -1,8 +1,9 @@
 export const vistaPlantas = "<section class=\"app-page oculto\" id=\"pagina-plantas\" data-pagina=\"plantas\">\n          <div class=\"plants-heading\">\n            <div><p class=\"section-eyebrow\">TU COLECCIÓN</p><h1>Mis plantas</h1></div>\n            <button class=\"button-primary\" id=\"btn-abrir-modal\" type=\"button\">Nueva planta</button>\n          </div>\n          <label class=\"search-field\"><span class=\"sr-only\">Buscar plantas</span><input id=\"plant-search\" type=\"search\" placeholder=\"Buscar por nombre o especie\" /></label>\n          <div class=\"filter-list\" aria-label=\"Filtrar plantas por categoría\">\n            <button class=\"filter-chip activo\" type=\"button\" data-categoria=\"todas\" aria-pressed=\"true\">Todas</button>\n            <button class=\"filter-chip\" type=\"button\" data-categoria=\"interior\" aria-pressed=\"false\">Interior</button>\n            <button class=\"filter-chip\" type=\"button\" data-categoria=\"exterior\" aria-pressed=\"false\">Exterior</button>\n            <button class=\"filter-chip\" type=\"button\" data-categoria=\"suculentas\" aria-pressed=\"false\">Suculentas</button>\n            <button class=\"filter-chip\" type=\"button\" data-categoria=\"aromaticas\" aria-pressed=\"false\">Aromáticas</button>\n          </div>\n          <p class=\"dashboard-message\" id=\"plants-message\" role=\"status\" aria-live=\"polite\"></p>\n          <div class=\"grid-plantas\" id=\"lista-plantas\" aria-live=\"polite\"></div>\n        </section>";
-import { eliminarPlanta, obtenerUrlFoto } from '../servicios/plantas.js';
+import { eliminarPlanta, obtenerPlantas, obtenerUrlFoto } from '../servicios/plantas.js';
 import { registrarCuidado } from '../servicios/cuidados.js';
 import { crearElemento, limpiarEntrada } from '../utils/dom.js';
 import { crearTarjetaPlanta } from '../componentes/tarjetaPlanta.js';
+import { crearFormularioRevision, crearLineaTiempo, crearInsigniaSalud } from '../componentes/seguimientoSalud.js';
 
 let filtroCategoria = 'todas';
 
@@ -39,14 +40,14 @@ export function renderizarPlantas(contexto) {
   });
 }
 
-async function abrirDetalle(contexto, plantaId) {
+async function abrirDetalle(contexto, plantaId, plantaActualizada = null) {
   const { plantas } = contexto.obtenerEstado();
-  const planta = plantas.find((item) => item.id === plantaId);
+  const planta = plantaActualizada || plantas.find((item) => item.id === plantaId);
   if (!planta) return;
   const { tApp } = contexto;
   const contenedor = document.querySelector('#detalle-contenido');
   contenedor.replaceChildren(crearElemento('p', 'page-intro', tApp('loadingDetail')));
-  contexto.navegarA('detalle');
+  contexto.navegarA('detalle', 'plantas');
 
   const urlFoto = await obtenerUrlFoto(planta.foto_ruta);
   const hero = crearElemento('div', 'detail-hero');
@@ -96,12 +97,39 @@ async function abrirDetalle(contexto, plantaId) {
     document.querySelector('#recordatorio-planta').value = planta.id;
     document.querySelector('#form-recordatorio').classList.remove('oculto');
   });
-  actions.append(water, reminder);
-  contenedor.replaceChildren(hero, facts, notes, actions);
+  const revisar = crearElemento('button', 'button-secondary', tApp('reviewPlant'));
+  revisar.type = 'button';
+  actions.append(water, revisar, reminder);
+
+  const resumenSalud = crearElemento('div', 'plant-health-row');
+  resumenSalud.append(
+    crearElemento('span', 'plant-health-label', tApp('healthLabel')),
+    crearInsigniaSalud(planta.estado_salud),
+    crearElemento('small', '', planta.ultima_revision
+      ? tApp('lastReview', { date: contexto.formatoFecha(planta.ultima_revision) })
+      : ''),
+  );
+
+  const zonaRevision = crearElemento('div', 'review-zone');
+  revisar.addEventListener('click', () => {
+    if (zonaRevision.firstChild) { zonaRevision.replaceChildren(); return; }
+    zonaRevision.replaceChildren(crearFormularioRevision(planta, async () => {
+      await contexto.cargarJardin();
+      // Lectura directa: otra carga en curso podría haber dejado la lista del estado desactualizada.
+      const frescas = await obtenerPlantas();
+      await abrirDetalle(contexto, planta.id, frescas.find((item) => item.id === planta.id));
+    }));
+    zonaRevision.querySelector('input')?.focus();
+  });
+
+  contenedor.replaceChildren(hero, resumenSalud, facts, notes, actions, zonaRevision);
+  const lineaTiempo = await crearLineaTiempo(planta, contexto.formatoFecha);
+  if (contenedor.isConnected && contenedor.contains(zonaRevision)) contenedor.append(lineaTiempo);
 }
 
 export function inicializarPlantas(contexto) {
   contexto.abrirDetalle = (id) => abrirDetalle(contexto, id);
+  document.querySelector('#detalle-volver')?.addEventListener('click', () => contexto.navegarA('plantas'));
   document.querySelector('#btn-abrir-modal')?.addEventListener('click', () => contexto.abrirModalPlanta(null, { pantallaCompleta: true, ruta: 'plantas', pestana: 'plantas' }));
   document.querySelector('#plant-search').addEventListener('input', () => renderizarPlantas(contexto));
   document.querySelectorAll('[data-categoria]').forEach((boton) => boton.addEventListener('click', () => {
@@ -137,3 +165,5 @@ export function inicializarPlantas(contexto) {
     }
   });
 }
+
+export const vistaDetalle = "<section class=\"app-page oculto\" id=\"pagina-detalle\" data-pagina=\"detalle\">\n          <button class=\"text-action back-action\" id=\"detalle-volver\" type=\"button\">Volver a mis plantas</button>\n          <div id=\"detalle-contenido\"></div>\n        </section>";
