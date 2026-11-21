@@ -202,3 +202,52 @@ html[data-theme='dark'] .theme-option.seleccionado { border-color: #a9d8a8; back
 .button-quiet, .button-primary, .button-secondary, .plant-action { transition: none; }
 
 }
+
+/* ---- Monitoreo de salud ---- */
+.health-badge { display: inline-flex; align-items: center; min-height: 22px; padding: 0 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.health-bien { background: #e5f1e4; color: #315d37; }
+.health-regular { background: #fff0cf; color: #785817; }
+.health-mal { background: #f9e3df; color: #8e352d; }
+.health-sin { background: var(--surface-raised); color: var(--muted); }
+.plant-health { margin: 8px 0 0 6px; }
+.plant-health-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 0 0 14px; }
+.plant-health-label { color: var(--muted); font-size: 12px; font-weight: 600; }
+.plant-health-row small { color: var(--muted); font-size: 12px; }
+.review-zone:not(:empty) { margin-top: 16px; }
+.review-title { margin: 0 0 12px; color: var(--text); font-size: 16px; font-weight: 600; }
+.health-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 14px; }
+.health-option { position: relative; display: flex; align-items: center; justify-content: center; min-height: 46px; border: 1.5px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font-size: 13px; font-weight: 600; cursor: pointer; }
+.health-option input { position: absolute; inset: 0; opacity: 0; cursor: pointer; margin: 0; }
+.health-option:has(input:checked).health-bien { border-color: #3d7653; background: #e5f1e4; color: #234d36; }
+.health-option:has(input:checked).health-regular { border-color: #b98a1f; background: #fff0cf; color: #785817; }
+.health-option:has(input:checked).health-mal { border-color: #b4483b; background: #f9e3df; color: #8e352d; }
+.health-option:has(input:focus-visible) { outline: 2px solid rgba(94,146,113,.6); outline-offset: 2px; }
+.plant-timeline { margin-top: 26px; }
+.timeline-item { position: relative; }
+.timeline-item .health-badge { margin-left: 4px; vertical-align: middle; }
+.timeline-photo { grid-column: 1 / -1; width: 100%; max-height: 220px; border-radius: 6px; object-fit: cover; }
+.timeline { display: grid; gap: 8px; }
+
+.attention-block { margin: -12px 0 26px; }
+.attention-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.attention-head h2 { margin: 0; color: var(--text); font-size: 16px; font-weight: 600; }
+.attention-head span { color: var(--muted); font-size: 12px; }
+.attention-list { display: grid; gap: 8px; }
+.attention-ok { margin: 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--muted); font-size: 13px; }
+.attention-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border: 1px solid var(--line); border-left-width: 4px; border-radius: 6px; background: var(--surface); }
+.attention-urgente { border-left-color: #b4483b; }
+.attention-atencion { border-left-color: #c79a2b; }
+.attention-text { display: grid; flex: 1; min-width: 0; gap: 2px; }
+.attention-text strong { color: var(--text); font-size: 14px; }
+.attention-text small { color: var(--muted); font-size: 12px; }
+.attention-dot { width: 10px; height: 10px; flex: 0 0 auto; border-radius: 50%; background: #c79a2b; }
+.attention-urgente .attention-dot { background: #b4483b; }
+.week-summary { margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+
+body[data-theme='dark'] .health-bien, html[data-theme='dark'] .health-bien { background: #29372e; color: #a9d8a8; }
+body[data-theme='dark'] .health-regular, html[data-theme='dark'] .health-regular { background: #3b3220; color: #f0cf85; }
+body[data-theme='dark'] .health-mal, html[data-theme='dark'] .health-mal { background: #3d2623; color: #f1a69b; }
+body[data-theme='dark'] .health-option:has(input:checked).health-bien { background: #29372e; color: #a9d8a8; }
+body[data-theme='dark'] .health-option:has(input:checked).health-regular { background: #3b3220; color: #f0cf85; }
+body[data-theme='dark'] .health-option:has(input:checked).health-mal { background: #3d2623; color: #f1a69b; }
+@media (max-width: 480px) { .health-options { gap: 6px; } }

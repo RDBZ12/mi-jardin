@@ -89,6 +89,9 @@ async function sincronizarOperacion(usuarioId, operacion) {
   if (operacion.tabla === 'plantas' && operacion.accion === 'upsert') {
     const fotoRuta = await subirFotoPlanta(usuarioId, operacion, payload);
     const datos = quitarCamposLocales({ ...payload, usuario_id: usuarioId, foto_ruta: fotoRuta });
+    // Los calcula la base de datos a partir del historial; no se deben pisar desde la caché.
+    delete datos.estado_salud;
+    delete datos.ultima_revision;
     const { data, error } = await supabase
       .from('plantas')
       .upsert(datos)
@@ -120,9 +123,10 @@ async function sincronizarOperacion(usuarioId, operacion) {
   }
 
   if (operacion.tabla === 'registros_cuidado' && operacion.accion === 'upsert') {
+    const fotoRuta = await subirFotoPlanta(usuarioId, operacion, payload);
     const { error } = await supabase
       .from('registros_cuidado')
-      .upsert(quitarCamposLocales({ ...payload, usuario_id: usuarioId }));
+      .upsert(quitarCamposLocales({ ...payload, usuario_id: usuarioId, foto_ruta: fotoRuta }));
     if (error) throw error;
     return;
   }

@@ -1,6 +1,7 @@
 export const vistaHistorial = "<section class=\"app-page oculto\" id=\"pagina-historial\" data-pagina=\"historial\">\n          <button class=\"text-action back-action menu-back-arrow\" type=\"button\" data-volver-menu data-i18n-aria-label=\"volver\" aria-label=\"Volver al menú\" title=\"Volver al menú\"><span aria-hidden=\"true\">←</span></button>\n          <div class=\"plants-heading\"><div><p class=\"section-eyebrow\">ACTIVIDAD</p><h1>Historial</h1></div></div>\n          <div class=\"filter-list\" aria-label=\"Filtrar historial\">\n            <button class=\"filter-chip activo\" type=\"button\" data-historial-filtro=\"todos\" aria-pressed=\"true\">Todos</button>\n            <button class=\"filter-chip\" type=\"button\" data-historial-filtro=\"riego\" aria-pressed=\"false\">Riego</button>\n            <button class=\"filter-chip\" type=\"button\" data-historial-filtro=\"otros\" aria-pressed=\"false\">Otros cuidados</button>\n          </div>\n          <p class=\"dashboard-message\" id=\"history-message\" role=\"status\" aria-live=\"polite\"></p>\n          <div class=\"timeline\" id=\"historial-lista\"></div>\n        </section>";
 import { obtenerHistorialCuidados } from '../servicios/cuidados.js';
 import { crearElemento, mostrarVacio } from '../utils/dom.js';
+import { traduccionSalud } from '../utils/idiomas.js';
 
 let filtroHistorial = 'todos';
 
@@ -20,7 +21,7 @@ export async function renderizarHistorial(contexto) {
       const planta = plantas.find((item) => item.id === evento.planta_id);
       fila.append(
         crearElemento('strong', '', contexto.traduccionTipo(evento.tipo)),
-        crearElemento('span', '', `${planta?.nombre || contexto.tApp('plantFallback')}${evento.observaciones ? ` · ${evento.observaciones}` : ''}`),
+        crearElemento('span', '', `${planta?.nombre || contexto.tApp('plantFallback')}${evento.estado_salud ? ` · ${contexto.tApp('healthLabel')}: ${traduccionSalud(evento.estado_salud)}` : ''}${evento.observaciones ? ` · ${evento.observaciones}` : ''}`),
       );
       const fecha = document.createElement('time');
       fecha.dateTime = evento.fecha_hora;

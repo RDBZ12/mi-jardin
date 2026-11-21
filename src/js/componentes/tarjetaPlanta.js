@@ -1,4 +1,5 @@
 import { sanitizarTexto } from '../utils/dom.js';
+import { crearInsigniaSalud } from './seguimientoSalud.js';
 
 export function crearTarjetaPlanta(planta, urlFoto, incluirEliminar = true, { tApp, traduccionCategoria, calcularEstadoRiego }) {
   const tarjeta = document.createElement('article');
@@ -35,6 +36,11 @@ export function crearTarjetaPlanta(planta, urlFoto, incluirEliminar = true, { tA
   badge.className = `plant-badge ${estado.clase}`;
   badge.textContent = estado.texto;
   info.append(badge);
+  if (planta.estado_salud) {
+    const salud = crearInsigniaSalud(planta.estado_salud);
+    salud.classList.add('plant-health');
+    info.append(salud);
+  }
   tarjeta.append(info);
 
   const acciones = document.createElement('div');
