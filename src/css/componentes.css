@@ -124,6 +124,8 @@ html[data-theme='dark'] .theme-option.seleccionado { border-color: #a9d8a8; back
 .fab-add-plant:hover, .fab-add-plant:focus-visible { background: #194733; }
 .fab-add-plant::before { position: absolute; right: calc(100% + 10px); padding: 7px 10px; border-radius: 5px; background: #202c25; color: #fff; content: attr(data-tooltip); font-size: 12px; white-space: nowrap; opacity: 0; pointer-events: none; transform: translateX(4px); transition: opacity .15s ease, transform .15s ease; }
 .fab-add-plant:hover::before, .fab-add-plant:focus-visible::before { opacity: 1; transform: translateX(0); }
+.home-add-row { display: flex; justify-content: flex-end; margin: 12px 0 8px; }
+.home-add-row .fab-add-plant { position: static; right: auto; bottom: auto; width: 54px; height: 54px; box-shadow: 0 5px 18px rgba(20, 45, 30, .2); }
 .button-secondary { border-color: var(--line); background: var(--surface); color: var(--text); }
 .button-secondary:hover { background: var(--surface-raised); }
 .dashboard-message { min-height: 20px; margin: 18px 0 0; color: var(--muted); font-size: 13px; }
@@ -193,7 +195,6 @@ html[data-theme='dark'] .theme-option.seleccionado { border-color: #a9d8a8; back
 .timeline-item time { grid-column: 2; grid-row: 1 / span 2; }
 .detail-hero { grid-template-columns: 1fr; gap: 14px; }
 .detail-hero img, .detail-placeholder { max-height: 300px; aspect-ratio: 16 / 10; }
-.home-plants-heading > .fab-add-plant { position: static; right: auto; bottom: auto; width: 44px; height: 44px; margin-left: auto; box-shadow: 0 4px 14px rgba(20, 45, 30, .2); }
 
 }
 @media (prefers-reduced-motion: reduce) {
