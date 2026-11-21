@@ -9,6 +9,16 @@ export function renderizarMenu(contexto) {
 
 export function inicializarMenu(contexto) {
   crearTarjetaAccesibilidad();
+  const listaPerfil = document.querySelector('.menu-lista-perfil');
+  const filaCuenta = listaPerfil?.querySelector('[data-subvista="sub-perfil-cuenta"]');
+  if (listaPerfil && filaCuenta && !listaPerfil.querySelector('[data-subvista="sub-idioma"]')) {
+    const filaIdioma = document.createElement('button');
+    filaIdioma.className = 'menu-fila';
+    filaIdioma.type = 'button';
+    filaIdioma.dataset.subvista = 'sub-idioma';
+    filaIdioma.innerHTML = '<span class="menu-fila-icono" aria-hidden="true">文</span><span data-i18n="menu_idioma">Idioma</span><span class="menu-fila-flecha" aria-hidden="true">›</span>';
+    listaPerfil.insertBefore(filaIdioma, filaCuenta);
+  }
   document.querySelectorAll('[data-theme-choice]').forEach((boton) => boton.addEventListener('click', () => aplicarTema(boton.dataset.themeChoice)));
   inicializarMenuYPreferencias({
     onSincronizarManual: contexto.onSincronizarManual,
