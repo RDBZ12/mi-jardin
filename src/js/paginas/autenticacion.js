@@ -1,5 +1,9 @@
 import { isSupabaseConfigured, supabase } from '../supabase.js';
 
+function obtenerUrlRetornoAuth() {
+  return new URL('.', window.location.href).href;
+}
+
 const form = document.querySelector('#auth-form');
 const loginView = document.querySelector('#auth-login-view');
 const verifyView = document.querySelector('#verify-view');
@@ -374,7 +378,7 @@ resendCodeButton.addEventListener('click', async () => {
   verifyMessage.removeAttribute('data-error');
   try {
     const resultado = verificationType === 'recovery'
-      ? await supabase.auth.resetPasswordForEmail(verificationEmail, { redirectTo: window.location.origin })
+      ? await supabase.auth.resetPasswordForEmail(verificationEmail, { redirectTo: obtenerUrlRetornoAuth() })
       : await supabase.auth.resend({ type: 'signup', email: verificationEmail });
     const { error } = resultado;
     if (error) throw error;
@@ -450,7 +454,7 @@ document.querySelector('#forgot-button').addEventListener('click', async () => {
   forgotButton.disabled = true;
   forgotButton.textContent = copy.sending;
   try {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: obtenerUrlRetornoAuth() });
     if (error) throw error;
     verificationEmail = email;
     mostrarVerificacion(email, 'recovery');
@@ -467,7 +471,7 @@ googleButton.addEventListener('click', async () => {
   try {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: obtenerUrlRetornoAuth() },
     });
     if (error) throw error;
   } catch (error) {

@@ -27,7 +27,7 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: 'npm'
 
       - name: Instalar dependencias
@@ -42,8 +42,11 @@ jobs:
       - name: Subir artefacto de GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
           path: dist
 
       - name: Desplegar en GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
