@@ -399,6 +399,18 @@ window.addEventListener('online', async () => {
   actualizarEstadoConexion({ pendientes: resultado.pendientes > 0 });
 });
 
+async function actualizarAlVolverAlaApp() {
+  if (document.visibilityState === 'hidden' || !usuarioActualId || !supabase || !navigator.onLine) return;
+  if (!await revisarConexionServicio()) return;
+  await sincronizarPendientes(usuarioActualId);
+  await cargarJardin();
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') void actualizarAlVolverAlaApp();
+});
+window.addEventListener('focus', () => void actualizarAlVolverAlaApp());
+
 window.addEventListener('offline', () => {
   servicioDisponible = false;
   revisionConexion += 1;
