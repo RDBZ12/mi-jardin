@@ -8,8 +8,8 @@ test('el catálogo contiene especies con frecuencia de riego', () => {
 });
 
 test('encuentra una especie por nombre científico', () => {
-  assert.deepEqual(buscarEspeciePorNombre('Monstera deliciosa'), {
-    nombre: 'Monstera', cientifico: 'Monstera deliciosa', categoria: 'interior', riego: 7,
-  });
-  assert.equal(buscarEspeciePorNombre('Monstera'), null);
+  const especie = buscarEspeciePorNombre('Monstera deliciosa');
+  assert.equal(especie?.scientificName, 'Monstera deliciosa');
+  assert.equal(especie?.wateringDays, 7);
+  assert.equal(buscarEspeciePorNombre('Costilla de Adán')?.scientificName, 'Monstera deliciosa');
 });

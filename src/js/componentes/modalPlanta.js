@@ -134,7 +134,7 @@ export function inicializarModalPlanta(contexto) {
   nombreCientifico.addEventListener('input', () => {
     const especie = buscarEspeciePorNombre(nombreCientifico.value);
     if (!especie) return;
-    document.querySelector('#planta-categoria').value = especie.categoria;
+    if (especie.categoria !== 'otras') document.querySelector('#planta-categoria').value = especie.categoria;
     document.querySelector('#planta-frecuencia').value = especie.riego;
   });
 
@@ -162,7 +162,7 @@ export function inicializarModalPlanta(contexto) {
         ...(id ? { id } : {}),
         nombre,
         nombre_cientifico: nombre,
-        categoria: especie?.categoria || document.querySelector('#planta-categoria').value,
+        categoria: especie?.categoria !== 'otras' ? especie.categoria : document.querySelector('#planta-categoria').value,
         frecuencia_riego_dias: especie?.riego || Number(document.querySelector('#planta-frecuencia').value),
         notas: limpiarEntrada(document.querySelector('#planta-notas')) || null,
       };
