@@ -29,7 +29,7 @@ export function abrirModalPlanta(plantaEditar = null, opciones = {}) {
   fotoSeleccionada = null;
   document.querySelector('#planta-id').value = plantaEditar?.id || '';
   document.querySelector('#modal-titulo').textContent = contextoModal.tApp(plantaEditar ? 'editPlant' : 'addPlantTitle');
-  document.querySelector('#planta-nombre').value = plantaEditar?.nombre_cientifico || plantaEditar?.nombre || '';
+  document.querySelector('#planta-nombre').value = plantaEditar?.nombre || '';
   document.querySelector('#planta-especie').value = plantaEditar?.nombre_cientifico || '';
   document.querySelector('#planta-categoria').value = plantaEditar?.categoria || 'interior';
   document.querySelector('#planta-frecuencia').value = plantaEditar?.frecuencia_riego_dias || 7;
@@ -79,19 +79,17 @@ export function inicializarModalPlanta(contexto) {
   formPlanta = document.querySelector('#form-planta');
   errorPlanta = document.querySelector('#error-planta');
   botonGuardarPlanta = document.querySelector('#btn-guardar-planta');
-  const nombreCientifico = document.querySelector('#planta-nombre');
-  const nombrePersonalizado = document.querySelector('#planta-especie');
-  nombreCientifico.maxLength = 150;
-  nombreCientifico.placeholder = 'Ej. Monstera deliciosa';
-  nombreCientifico.closest('label')?.querySelector('span') && (nombreCientifico.closest('label').querySelector('span').textContent = 'Nombre científico');
-  if (nombrePersonalizado) {
-    nombrePersonalizado.closest('label').hidden = true;
-  }
+  const nombreInput = document.querySelector('#planta-nombre');
+  const cientificoInput = document.querySelector('#planta-especie');
+  nombreInput.maxLength = 100;
+  nombreInput.placeholder = 'Ej. Costilla de Adán';
+  cientificoInput.maxLength = 150;
+  cientificoInput.readOnly = true;
   const listaEspecies = document.createElement('datalist');
   listaEspecies.id = 'catalogo-especies';
-  listaEspecies.innerHTML = catalogoEspecies.map((especie) => `<option value="${especie.cientifico}">${especie.nombre} · ${especie.riego} días</option>`).join('');
-  nombreCientifico.setAttribute('list', listaEspecies.id);
-  nombreCientifico.after(listaEspecies);
+  listaEspecies.innerHTML = catalogoEspecies.map((especie) => `<option value="${especie.name}">${especie.scientificName} · ${especie.wateringDays} días</option>`).join('');
+  nombreInput.setAttribute('list', listaEspecies.id);
+  nombreInput.after(listaEspecies);
   fotoPreview = document.querySelector('#planta-foto-preview');
   if (!fotoPreview) {
     fotoPreview = document.createElement('span');
@@ -133,10 +131,13 @@ export function inicializarModalPlanta(contexto) {
     actualizarPreview(fotoSeleccionada);
   });
 
-  nombreCientifico.addEventListener('input', () => {
-    const especie = buscarEspeciePorNombre(nombreCientifico.value);
-    if (!especie) return;
-    nombreCientifico.value = especie.scientificName;
+  nombreInput.addEventListener('input', () => {
+    const especie = buscarEspeciePorNombre(nombreInput.value);
+    if (!especie) {
+      cientificoInput.value = '';
+      return;
+    }
+    cientificoInput.value = especie.scientificName;
     if (especie.categoria !== 'otras') document.querySelector('#planta-categoria').value = especie.categoria;
     document.querySelector('#planta-frecuencia').value = especie.riego;
   });
@@ -160,11 +161,12 @@ export function inicializarModalPlanta(contexto) {
     try {
       const id = document.querySelector('#planta-id').value || undefined;
       const nombre = limpiarEntrada(document.querySelector('#planta-nombre'));
+      const nombreCientifico = limpiarEntrada(document.querySelector('#planta-especie')) || null;
       const especie = buscarEspeciePorNombre(nombre);
       const planta = {
         ...(id ? { id } : {}),
         nombre,
-        nombre_cientifico: nombre,
+        nombre_cientifico: nombreCientifico,
         categoria: especie?.categoria !== 'otras' ? especie.categoria : document.querySelector('#planta-categoria').value,
         frecuencia_riego_dias: especie?.riego || Number(document.querySelector('#planta-frecuencia').value),
         notas: limpiarEntrada(document.querySelector('#planta-notas')) || null,
