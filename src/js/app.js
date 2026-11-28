@@ -168,6 +168,10 @@ const contexto = {
   onSincronizarManual: async () => {
     if (!servicioDisponible || !supabase) throw new Error(tApp('offlineSyncText'));
     const resultado = await sincronizarPendientes(usuarioActualId, cargarJardin);
+    if (resultado.error) throw resultado.error;
+    if (resultado.pendientes > 0) {
+      throw new Error(`Quedan ${resultado.pendientes} cambios pendientes de sincronizar.`);
+    }
     await cargarJardin();
     actualizarResumenPerfil();
     return resultado;
