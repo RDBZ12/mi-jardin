@@ -1,6 +1,6 @@
 import { supabase } from '../supabase.js';
 import { encolarOperacion, guardarCacheLocal, leerCacheLocal } from './offline.js';
-import { obtenerUsuarioDeSesion, sincronizarPendientes } from './sincronizador.js';
+import { esErrorDeRed, obtenerUsuarioDeSesion, sincronizarPendientes } from './sincronizador.js';
 
 const TIPOS_CUIDADO = new Set([
   'riego',
@@ -86,7 +86,7 @@ export async function registrarCuidado(plantaId, tipo = 'riego', notas = '', opc
     if (resultado.pendientes && navigator.onLine && !resultado.error) {
       resultado = await sincronizarPendientes(usuario.id);
     }
-    if (resultado.error) throw resultado.error;
+    if (resultado.error && !esErrorDeRed(resultado.error)) throw resultado.error;
   }
 
   return registro;

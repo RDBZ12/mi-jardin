@@ -1,6 +1,6 @@
 import { supabase } from '../supabase.js';
 import { encolarOperacion, guardarCacheLocal, leerCacheLocal, obtenerColaPendiente } from './offline.js';
-import { obtenerUsuarioDeSesion, sincronizarPendientes } from './sincronizador.js';
+import { esErrorDeRed, obtenerUsuarioDeSesion, sincronizarPendientes } from './sincronizador.js';
 import { comprimirFoto } from '../utils/imagenes.js';
 
 const BUCKET_FOTOS = 'fotos-plantas';
@@ -89,7 +89,7 @@ export async function guardarPlanta(planta, archivoFoto = null) {
 
   if (navigator.onLine) {
     const resultado = await sincronizarPendientes(usuario.id);
-    if (resultado.error) throw resultado.error;
+    if (resultado.error && !esErrorDeRed(resultado.error)) throw resultado.error;
   }
   return registroLocal;
 }
@@ -138,6 +138,6 @@ export async function eliminarPlanta(id) {
   });
   if (navigator.onLine) {
     const resultado = await sincronizarPendientes(usuario.id);
-    if (resultado.error) throw resultado.error;
+    if (resultado.error && !esErrorDeRed(resultado.error)) throw resultado.error;
   }
 }

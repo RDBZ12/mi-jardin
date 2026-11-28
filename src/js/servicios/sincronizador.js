@@ -48,13 +48,13 @@ export async function obtenerUsuarioDeSesion() {
       return data.session.user;
     }
     if (!navigator.onLine) return usuarioOffline;
-    return error && errorDeRed(error) ? usuarioOffline : null;
+    return error && esErrorDeRed(error) ? usuarioOffline : null;
   } catch (error) {
-    return errorDeRed(error) ? usuarioOffline : null;
+    return esErrorDeRed(error) ? usuarioOffline : null;
   }
 }
 
-function errorDeRed(error) {
+export function esErrorDeRed(error) {
   return !navigator.onLine
     || error instanceof TypeError
     || /fetch|network|timeout/i.test(`${error?.name || ''} ${error?.message || ''}`);
@@ -186,7 +186,7 @@ export async function sincronizarPendientes(usuarioId, onProgreso = null) {
         procesadas += 1;
       } catch (errorOperacion) {
         ultimoError = errorOperacion;
-        if (!errorDeRed(errorOperacion)) {
+        if (!esErrorDeRed(errorOperacion)) {
           console.error('No se pudo sincronizar una operación:', errorOperacion);
         }
         break;
