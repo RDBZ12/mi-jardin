@@ -19,7 +19,7 @@
         const tema = localStorage.getItem('mi-jardin-theme-preference') || 'light';
         if (tema === 'dark' || (tema === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) raiz.dataset.theme = 'dark';
         const usuario = localStorage.getItem('mi_jardin_usuario_offline');
-        const rutas = ['inicio', 'plantas', 'riego', 'identificar', 'historial', 'recordatorios', 'menu'];
+        const rutas = ['inicio', 'plantas', 'riego', 'identificar', 'historial', 'catalogo', 'recordatorios', 'menu'];
         const ruta = localStorage.getItem('mi-jardin-vista-activa');
         if (usuario) {
           raiz.classList.add('has-saved-user');

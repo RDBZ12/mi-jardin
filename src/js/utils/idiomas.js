@@ -39,6 +39,10 @@ export const textoApp = {
     needsAttention: 'Necesitan atención', allGood: 'Todo en orden. Tus plantas están al día.', attentionCount: '{count} requieren atención', attentionOne: '1 requiere atención',
     reasonOverdue: 'Riego atrasado {days} d', reasonBad: 'Se ve mal', reasonFair: 'Salud regular', reasonStale: 'Sin revisar hace {days} d', reasonNever: 'Aún sin revisar',
     weekTitle: 'Esta semana', weekSummary: '{water} riegos · {reviews} revisiones · {other} otros cuidados', reviewNow: 'Revisar',
+    catalogEyebrow: 'CATÁLOGO', catalogTitle: 'Catálogo de productos', catalogIntro: 'Busca productos por nombre, marca o tipo.', catalogSearch: 'Buscar producto', catalogSearchPlaceholder: 'Busca por nombre, marca o tipo',
+    catalogLoading: 'Buscando…', catalogEmpty: 'Sin resultados para "{term}".', catalogTypeToSearch: 'Escribe para buscar productos.', catalogError: 'No se pudo cargar el catálogo. Revisa tu conexión.', catalogRetry: 'Reintentar',
+    catalogShowing: 'Mostrando {shown} de {total} resultados', catalogAvailable: 'Disponible', catalogSoldOut: 'Agotado', catalogBackList: 'Volver al catálogo',
+    catalogBrand: 'Marca', catalogModel: 'Modelo', catalogCategory: 'Categoría', catalogType: 'Tipo', catalogStock: 'Existencia', catalogUnits: '{n} unidades',
     plant: 'Planta', noPhoto: 'Sin foto', details: 'Detalles', delete: 'Eliminar', waterNow: '💧 Regar ahora',
     loadingPlants: 'Cargando tus plantas…', loadPlantsError: 'No se pudieron cargar las plantas: {error}',
     emptyGardenTitle: 'Tu jardín empieza aquí', emptyGardenText: 'Agrega tu primera planta para llevar un registro de sus cuidados.',
@@ -127,6 +131,10 @@ export const textoApp = {
     needsAttention: 'Need attention', allGood: 'All good. Your plants are up to date.', attentionCount: '{count} need attention', attentionOne: '1 needs attention',
     reasonOverdue: 'Watering overdue {days} d', reasonBad: 'Looks poor', reasonFair: 'Fair health', reasonStale: 'Not checked for {days} d', reasonNever: 'Not checked yet',
     weekTitle: 'This week', weekSummary: '{water} waterings · {reviews} check-ups · {other} other care', reviewNow: 'Check',
+    catalogEyebrow: 'CATALOG', catalogTitle: 'Product catalog', catalogIntro: 'Search products by name, brand or type.', catalogSearch: 'Search products', catalogSearchPlaceholder: 'Search by name, brand or type',
+    catalogLoading: 'Searching…', catalogEmpty: 'No results for "{term}".', catalogTypeToSearch: 'Type to search products.', catalogError: 'The catalog could not be loaded. Check your connection.', catalogRetry: 'Retry',
+    catalogShowing: 'Showing {shown} of {total} results', catalogAvailable: 'In stock', catalogSoldOut: 'Sold out', catalogBackList: 'Back to catalog',
+    catalogBrand: 'Brand', catalogModel: 'Model', catalogCategory: 'Category', catalogType: 'Type', catalogStock: 'Stock', catalogUnits: '{n} units',
     plant: 'Plant', noPhoto: 'No photo', details: 'Details', delete: 'Delete', waterNow: '💧 Water now',
     loadingPlants: 'Loading your plants…', loadPlantsError: 'Could not load plants: {error}',
     emptyGardenTitle: 'Your garden starts here', emptyGardenText: 'Add your first plant to keep track of its care.',
@@ -283,7 +291,7 @@ export function traducirDashboard() {
   botonAgregarFlotante.title = tApp('addPlant');
   botonAgregarFlotante.dataset.tooltip = tApp('addPlant');
 
-  document.querySelectorAll('#pagina-inicio [data-t]').forEach((el) => { el.textContent = tApp(el.dataset.t); });
+  document.querySelectorAll('#pagina-inicio [data-t], #pagina-catalogo [data-t]').forEach((el) => { el.textContent = tApp(el.dataset.t); });
 
   const etiquetas = [
     ['label[for="planta-nombre"]', 'name'], ['label[for="planta-especie"]', 'scientificName'],

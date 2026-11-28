@@ -5,6 +5,7 @@ import { inicializarInicio, renderizarInicio } from './paginas/inicio.js';
 import { inicializarRiego, renderizarRiego } from './paginas/riego.js';
 import { inicializarRecordatorios, renderizarRecordatorios } from './paginas/recordatorios.js';
 import { inicializarHistorial, renderizarHistorial } from './paginas/historial.js';
+import { inicializarCatalogo, renderizarCatalogo } from './paginas/catalogo.js';
 import { inicializarIdentificar, renderizarIdentificar } from './paginas/identificar.js';
 import { inicializarMenu, renderizarMenu } from './paginas/menu.js';
 import { inicializarPlantas, renderizarPlantas } from './paginas/plantas.js';
@@ -47,10 +48,10 @@ let revisionConexion = 0;
 let comprobacionConexionEnCurso = false;
 let cargaActual = 0;
 let plantasActuales = [];
-const rutasPersistibles = new Set(['inicio', 'plantas', 'riego', 'identificar', 'historial', 'recordatorios', 'menu']);
+const rutasPersistibles = new Set(['inicio', 'plantas', 'riego', 'identificar', 'historial', 'catalogo', 'recordatorios', 'menu']);
 const rutaGuardada = localStorage.getItem('mi-jardin-vista-activa');
 let vistaActual = rutasPersistibles.has(rutaGuardada) ? rutaGuardada : 'inicio';
-let pestanaActiva = rutaGuardada === 'identificar' || rutaGuardada === 'historial' ? 'menu' : vistaActual;
+let pestanaActiva = rutaGuardada === 'identificar' || rutaGuardada === 'historial' || rutaGuardada === 'catalogo' ? 'menu' : vistaActual;
 
 
 
@@ -182,6 +183,7 @@ inicializarInicio(contexto);
 inicializarRiego(contexto);
 inicializarRecordatorios(contexto);
 inicializarHistorial(contexto);
+inicializarCatalogo(contexto);
 inicializarIdentificar(contexto);
 inicializarMenu(contexto);
 inicializarAccesibilidad();
@@ -207,6 +209,7 @@ function cambiarVista(nombre, pestaña = nombre) {
   if (nombre === 'plantas') renderizarPlantas(contexto);
   if (nombre === 'riego') renderizarRiego(contexto);
   if (nombre === 'historial') void renderizarHistorial(contexto);
+  if (nombre === 'catalogo') renderizarCatalogo(contexto);
   if (nombre === 'recordatorios') void renderizarRecordatorios(contexto);
   if (nombre === 'menu') void renderizarMenu(contexto);
   if (nombre === 'identificar') renderizarIdentificar(contexto);

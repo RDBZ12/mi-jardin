@@ -5,6 +5,7 @@ import { vistaRiego } from './riego.js';
 import { vistaRecordatorios } from './recordatorios.js';
 import { vistaIdentificar } from './identificar.js';
 import { vistaHistorial } from './historial.js';
+import { vistaCatalogo } from './catalogo.js';
 import { vistaMenu } from './menu.js';
 import { vistaModalPlanta } from '../componentes/modalPlanta.js';
 
@@ -25,6 +26,7 @@ if (contenedorVistas) {
     vistaRiego,
     vistaIdentificar,
     vistaHistorial,
+    vistaCatalogo,
     vistaRecordatorios,
     vistaMenu,
     vistaModalPlanta,
