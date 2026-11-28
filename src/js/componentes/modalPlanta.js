@@ -1,4 +1,5 @@
 import { limpiarEntrada } from '../utils/dom.js';
+import { buscarEspeciePorNombre, catalogoEspecies } from '../datos/catalogoEspecies.js';
 
 export const vistaModalPlanta = "<div class=\"modal oculto\" id=\"modal-planta\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"modal-titulo\">\n        <div class=\"modal-contenido\">\n          <div class=\"modal-heading\">\n            <div>\n              <p class=\"section-eyebrow\">TU JARDÍN</p>\n              <h2 id=\"modal-titulo\">Agregar una planta</h2>\n            </div>\n            <button class=\"icon-button\" id=\"btn-cerrar-modal\" type=\"button\" aria-label=\"Cerrar formulario\">×</button>\n          </div>\n          <form id=\"form-planta\">\n            <label class=\"form-field\" for=\"planta-nombre\">\n              <span>Nombre</span>\n              <input type=\"text\" id=\"planta-nombre\" maxlength=\"100\" required placeholder=\"Ej. Monstera del salón\" />\n            </label>\n            <label class=\"form-field\" for=\"planta-especie\">\n              <span>Nombre científico <span class=\"optional\">(opcional)</span></span>\n              <input type=\"text\" id=\"planta-especie\" maxlength=\"150\" placeholder=\"Ej. Monstera deliciosa\" />\n            </label>\n            <div class=\"form-row\">\n              <label class=\"form-field\" for=\"planta-categoria\">\n                <span>Categoría</span>\n                <select id=\"planta-categoria\">\n                  <option value=\"interior\">Interior</option>\n                  <option value=\"exterior\">Exterior</option>\n                  <option value=\"suculentas\">Suculentas</option>\n                  <option value=\"cactus\">Cactus</option>\n                  <option value=\"aromaticas\">Aromáticas</option>\n                  <option value=\"ornamentales\">Ornamentales</option>\n                  <option value=\"otras\">Otras</option>\n                </select>\n              </label>\n              <label class=\"form-field\" for=\"planta-frecuencia\">\n                <span>Riego cada (días)</span>\n                <input type=\"number\" id=\"planta-frecuencia\" min=\"1\" max=\"365\" value=\"7\" required />\n              </label>\n            </div>\n            <label class=\"form-field\" for=\"planta-foto\">\n              <span>Foto <span class=\"optional\">(opcional)</span></span>\n              <input type=\"file\" id=\"planta-foto\" accept=\"image/jpeg,image/png,image/webp\" />\n            </label>\n            <label class=\"form-field\" for=\"planta-notas\">\n              <span>Notas de cuidado <span class=\"optional\">(opcional)</span></span>\n              <textarea id=\"planta-notas\" rows=\"3\" maxlength=\"4000\" placeholder=\"Luz, sustrato u otros detalles\"></textarea>\n            </label>\n            <p class=\"form-error\" id=\"error-planta\" role=\"alert\"></p>\n            <div class=\"modal-actions\">\n              <button class=\"button-secondary\" id=\"btn-cancelar-modal\" type=\"button\">Cancelar</button>\n              <button class=\"button-primary\" id=\"btn-guardar-planta\" type=\"submit\">Guardar planta</button>\n            </div>\n          </form>\n        </div>\n      </div>";
 
@@ -27,7 +28,7 @@ export function abrirModalPlanta(plantaEditar = null, opciones = {}) {
   fotoSeleccionada = null;
   document.querySelector('#planta-id').value = plantaEditar?.id || '';
   document.querySelector('#modal-titulo').textContent = contextoModal.tApp(plantaEditar ? 'editPlant' : 'addPlantTitle');
-  document.querySelector('#planta-nombre').value = plantaEditar?.nombre || '';
+  document.querySelector('#planta-nombre').value = plantaEditar?.nombre_cientifico || plantaEditar?.nombre || '';
   document.querySelector('#planta-especie').value = plantaEditar?.nombre_cientifico || '';
   document.querySelector('#planta-categoria').value = plantaEditar?.categoria || 'interior';
   document.querySelector('#planta-frecuencia').value = plantaEditar?.frecuencia_riego_dias || 7;
@@ -76,6 +77,19 @@ export function inicializarModalPlanta(contexto) {
   formPlanta = document.querySelector('#form-planta');
   errorPlanta = document.querySelector('#error-planta');
   botonGuardarPlanta = document.querySelector('#btn-guardar-planta');
+  const nombreCientifico = document.querySelector('#planta-nombre');
+  const nombrePersonalizado = document.querySelector('#planta-especie');
+  nombreCientifico.maxLength = 150;
+  nombreCientifico.placeholder = 'Ej. Monstera deliciosa';
+  nombreCientifico.closest('label')?.querySelector('span') && (nombreCientifico.closest('label').querySelector('span').textContent = 'Nombre científico');
+  if (nombrePersonalizado) {
+    nombrePersonalizado.closest('label').hidden = true;
+  }
+  const listaEspecies = document.createElement('datalist');
+  listaEspecies.id = 'catalogo-especies';
+  listaEspecies.innerHTML = catalogoEspecies.map((especie) => `<option value="${especie.cientifico}">${especie.nombre} · ${especie.riego} días</option>`).join('');
+  nombreCientifico.setAttribute('list', listaEspecies.id);
+  nombreCientifico.after(listaEspecies);
   fotoPreview = document.querySelector('#planta-foto-preview');
   if (!fotoPreview) {
     fotoPreview = document.createElement('span');
@@ -117,6 +131,13 @@ export function inicializarModalPlanta(contexto) {
     actualizarPreview(fotoSeleccionada);
   });
 
+  nombreCientifico.addEventListener('input', () => {
+    const especie = buscarEspeciePorNombre(nombreCientifico.value);
+    if (!especie) return;
+    document.querySelector('#planta-categoria').value = especie.categoria;
+    document.querySelector('#planta-frecuencia').value = especie.riego;
+  });
+
   formPlanta?.addEventListener('keydown', (evento) => {
     if (evento.key !== 'Enter' || evento.target.matches('textarea, button')) return;
     evento.preventDefault();
@@ -135,12 +156,14 @@ export function inicializarModalPlanta(contexto) {
     errorPlanta.textContent = '';
     try {
       const id = document.querySelector('#planta-id').value || undefined;
+      const nombre = limpiarEntrada(document.querySelector('#planta-nombre'));
+      const especie = buscarEspeciePorNombre(nombre);
       const planta = {
         ...(id ? { id } : {}),
-        nombre: limpiarEntrada(document.querySelector('#planta-nombre')),
-        nombre_cientifico: limpiarEntrada(document.querySelector('#planta-especie')) || null,
-        categoria: document.querySelector('#planta-categoria').value,
-        frecuencia_riego_dias: Number(document.querySelector('#planta-frecuencia').value),
+        nombre,
+        nombre_cientifico: nombre,
+        categoria: especie?.categoria || document.querySelector('#planta-categoria').value,
+        frecuencia_riego_dias: especie?.riego || Number(document.querySelector('#planta-frecuencia').value),
         notas: limpiarEntrada(document.querySelector('#planta-notas')) || null,
       };
       await contexto.guardarPlanta(planta, fotoSeleccionada);
