@@ -149,7 +149,9 @@ html[data-theme='dark'] .theme-option.seleccionado { border-color: #a9d8a8; back
 .empty-state h2 { margin: 0 0 8px; color: var(--text); font-size: 17px; }
 .empty-state p { margin: 0; font-size: 13px; }
 .modal { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; overflow-y: auto; padding: 20px; background: rgba(20, 35, 25, .48); }
+.modal-planta-abierto { overflow: hidden !important; }
 .modal-planta-fullscreen { z-index: 10; align-items: stretch; padding: 0; background: var(--page); }
+.modal.modal-planta-fullscreen { z-index: 9999; background: var(--page); isolation: isolate; }
 .modal-planta-fullscreen .modal-contenido { width: min(100%, 760px); height: 100%; max-height: none; overflow-y: auto; border: 0; border-radius: 0; background: var(--page); box-shadow: none; }
 .modal-back-arrow { display: inline-grid; width: 40px; min-height: 40px; place-items: center; margin: 0 0 12px; padding: 0; border-radius: 50%; color: var(--text); font-size: 26px; line-height: 1; }
 .modal-back-arrow:hover { background: var(--surface-raised); }
@@ -180,7 +182,7 @@ html[data-theme='dark'] .theme-option.seleccionado { border-color: #a9d8a8; back
 .grid-plantas { grid-template-columns: 1fr; gap: 12px; }
 .plant-photo, .plant-photo-placeholder { aspect-ratio: 16 / 9; }
 .modal { align-items: end; padding: 10px calc(10px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left)); }
-.modal.modal-planta-fullscreen { z-index: 30; align-items: stretch; padding: 0; background: var(--page); }
+.modal.modal-planta-fullscreen { position: fixed; z-index: 9999 !important; inset: 0; align-items: stretch; padding: 0; background: var(--page); isolation: isolate; }
 .modal-contenido { max-height: 92vh; max-height: 92dvh; padding: 20px; }
 .modal-planta-fullscreen .modal-contenido { height: 100%; max-height: none; background: var(--page); padding: calc(20px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) calc(90px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); }
 .teclado-abierto .modal-planta-fullscreen .photo-preview { display: none; }

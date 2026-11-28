@@ -22,6 +22,7 @@ export function abrirModalPlanta(plantaEditar = null, opciones = {}) {
   pestanaRegresoModal = opciones.pestana || rutaRegresoModal;
   modalPlanta.classList.toggle('modal-planta-fullscreen', modalPantallaCompleta);
   document.querySelector('#vista-app')?.classList.toggle('modal-planta-activa', modalPantallaCompleta);
+  document.body.classList.add('modal-planta-abierto');
   if (modalPantallaCompleta) contextoModal.navegarA(rutaRegresoModal, pestanaRegresoModal);
   errorPlanta.textContent = '';
   formPlanta.reset();
@@ -43,6 +44,7 @@ export function cerrarModalPlanta() {
   modalPlanta.classList.add('oculto');
   modalPlanta.classList.remove('modal-planta-fullscreen');
   document.querySelector('#vista-app')?.classList.remove('modal-planta-activa');
+  document.body.classList.remove('modal-planta-abierto');
   const volverA = modalPantallaCompleta;
   const rutaRegreso = rutaRegresoModal;
   const pestanaRegreso = pestanaRegresoModal;
