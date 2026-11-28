@@ -1,6 +1,7 @@
 import { supabase } from '../supabase.js';
 import { encolarOperacion, guardarCacheLocal, leerCacheLocal, obtenerColaPendiente } from './offline.js';
 import { obtenerUsuarioDeSesion, sincronizarPendientes } from './sincronizador.js';
+import { comprimirFoto } from '../utils/imagenes.js';
 
 const BUCKET_FOTOS = 'fotos-plantas';
 const urlsFotoLocal = new Map();
@@ -57,10 +58,11 @@ export async function guardarPlanta(planta, archivoFoto = null) {
   const id = planta.id || crypto.randomUUID();
   const actuales = await leerCacheLocal(usuario.id, 'plantas');
   const anterior = actuales.find((item) => item.id === id);
-  const archivoLocal = archivoFoto || anterior?.foto_local_blob || null;
-  const extension = archivoFoto?.name?.match(/\.([a-z0-9]+)$/i)?.[1]?.toLowerCase() || 'jpg';
-  const rutaFoto = archivoFoto
-    ? `${usuario.id}/${id}.${extension}`
+  const archivoOptimizado = archivoFoto ? await comprimirFoto(archivoFoto) : null;
+  const archivoLocal = archivoOptimizado || anterior?.foto_local_blob || null;
+  const extensionFoto = archivoOptimizado?.type === 'image/webp' ? 'webp' : 'jpg';
+  const rutaFoto = archivoOptimizado
+    ? `${usuario.id}/plantas/${id}.${extensionFoto}`
     : (planta.foto_ruta ?? anterior?.foto_ruta ?? null);
   const registroLocal = {
     ...planta,
@@ -82,14 +84,14 @@ export async function guardarPlanta(planta, archivoFoto = null) {
     tabla: 'plantas',
     accion: 'upsert',
     payload: registroLocal,
-    archivoFoto,
+    archivoFoto: archivoOptimizado,
   });
 
   if (navigator.onLine) void sincronizarPendientes(usuario.id);
   return registroLocal;
 }
 
-export async function obtenerUrlFoto(plantaORuta) {
+export async function obtenerUrlFoto(plantaORuta, transform = null) {
   if (!plantaORuta) return null;
   if (typeof plantaORuta === 'object' && plantaORuta.foto_local_blob instanceof Blob) {
     const id = plantaORuta.id || plantaORuta.foto_ruta;
@@ -106,9 +108,10 @@ export async function obtenerUrlFoto(plantaORuta) {
   if (rutaStorage.startsWith('http') || rutaStorage.startsWith('data:')) return rutaStorage;
   if (!navigator.onLine || !supabase) return null;
 
+  const opciones = transform ? { transform } : undefined;
   const { data, error } = await supabase.storage
     .from(BUCKET_FOTOS)
-    .createSignedUrl(rutaStorage, 3600);
+    .createSignedUrl(rutaStorage, 3600, opciones);
   return error ? null : data?.signedUrl || null;
 }
 

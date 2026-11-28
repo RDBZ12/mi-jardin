@@ -49,7 +49,12 @@ async function abrirDetalle(contexto, plantaId, plantaActualizada = null) {
   contenedor.replaceChildren(crearElemento('p', 'page-intro', tApp('loadingDetail')));
   contexto.navegarA('detalle', 'plantas');
 
-  const urlFoto = await obtenerUrlFoto(planta.foto_ruta);
+  const urlFoto = await obtenerUrlFoto(planta, {
+    width: 1280,
+    height: 960,
+    resize: 'contain',
+    quality: 80,
+  });
   const hero = crearElemento('div', 'detail-hero');
   if (urlFoto) {
     const image = document.createElement('img');
