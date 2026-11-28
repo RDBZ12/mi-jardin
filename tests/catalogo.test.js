@@ -77,8 +77,7 @@ test('paginar: página fuera de rango se ajusta y lista vacía es segura', () =>
   assert.deepEqual([vacio.items.length, vacio.paginas, vacio.desde, vacio.hasta], [0, 1, 0, 0]);
 });
 
-test('la imagen de respaldo también se corrige (el texto va dentro de la URL)', () => {
-  const p = normalizarProducto({ ...crudo, imagen_respaldo: 'https://placehold.co/640x480/e8edf2/344054/png?text=Tel%C3%83%C2%A9fono%20inteligente' });
-  assert.equal(new URL(p.imagenRespaldo).searchParams.get('text'), 'Teléfono inteligente');
-  assert.equal(p.imagenRespaldo.startsWith('https://placehold.co/640x480/e8edf2/344054/png?text=Tel'), true);
+test('la imagen de respaldo se usa exactamente como la trae la API', () => {
+  const url = 'https://placehold.co/640x480/e8edf2/344054/png?text=Tel%C3%83%C2%A9fono%20inteligente';
+  assert.equal(normalizarProducto({ ...crudo, imagen_respaldo: url }).imagenRespaldo, url);
 });

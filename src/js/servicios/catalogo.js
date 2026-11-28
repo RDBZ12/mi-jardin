@@ -18,16 +18,9 @@ export function arreglarTexto(valor) {
   }
 }
 
-// Las imágenes de respaldo (placehold.co) llevan el texto en la URL, también mal codificado.
-function arreglarUrlImagen(url) {
-  if (typeof url !== 'string' || !url.startsWith('https://')) return '';
-  try {
-    const u = new URL(url);
-    const texto = u.searchParams.get('text');
-    const arreglado = arreglarTexto(texto);
-    if (texto && arreglado !== texto) { u.searchParams.set('text', arreglado); return u.toString(); }
-  } catch { /* se deja la URL tal cual */ }
-  return url;
+// Las URLs de imagen se usan tal como llegan de la API (solo se exige https).
+function urlHttps(url) {
+  return typeof url === 'string' && url.startsWith('https://') ? url : '';
 }
 
 function numero(valor) {
@@ -41,8 +34,8 @@ export function normalizarProducto(crudo) {
     id: crudo.id,
     nombre: arreglarTexto(crudo.nombre_comercial || crudo.nombre || ''),
     descripcion: arreglarTexto(crudo.descripcion || ''),
-    imagen: arreglarUrlImagen(crudo.imagen),
-    imagenRespaldo: arreglarUrlImagen(crudo.imagen_respaldo),
+    imagen: urlHttps(crudo.imagen),
+    imagenRespaldo: urlHttps(crudo.imagen_respaldo),
     marca: arreglarTexto(crudo.marca || ''),
     modelo: arreglarTexto(crudo.modelo || ''),
     categoria: arreglarTexto(crudo.categoria || ''),
