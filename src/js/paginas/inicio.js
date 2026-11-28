@@ -127,7 +127,9 @@ export function renderizarInicio(contexto) {
     if (contexto.obtenerEstado().vistaActual === 'inicio') renderizarActividad(contexto, registros);
   }).catch(() => {});
 
-  void tarjetasPara(plantas.slice(0, 3)).then((tarjetas) => {
+  // Inicio debe reflejar toda la colección sincronizada. La vista "Plantas"
+  // sigue ofreciendo búsqueda, filtros y la gestión completa.
+  void tarjetasPara(plantas).then((tarjetas) => {
     if (contexto.obtenerEstado().vistaActual !== 'inicio') return;
     document.querySelector('#inicio-plantas').replaceChildren(
       ...tarjetas.map(({ planta, urlFoto }) => crearTarjetaPlanta(planta, urlFoto, false, {
