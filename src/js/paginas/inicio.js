@@ -51,7 +51,7 @@ export const vistaInicio = `<section class="app-page" id="pagina-inicio" data-pa
           <button class="fab-add-plant" id="inicio-nueva-planta" type="button" aria-label="Agregar planta" title="Agregar planta" data-tooltip="Agregar planta">
             <span aria-hidden="true">+</span>
           </button>
-          <div class="section-heading home-plants-heading"><h2 data-t="collection">Tu colección</h2><button class="text-action" type="button" data-ir-a="plantas" data-t="seeAll">Ver todas</button></div>
+          <div class="section-heading home-plants-heading"><div><h2 data-t="collection">Tu colección</h2><span class="section-count" id="inicio-coleccion-count"></span></div><button class="text-action" type="button" data-ir-a="plantas" data-t="seeAll">Ver todas</button></div>
           <div class="grid-plantas grid-inicio" id="inicio-plantas"></div>
         </section>`;
 
@@ -92,6 +92,7 @@ export function renderizarInicio(contexto) {
   texto('#kpi-atencion-nota', m.urgentes ? (m.urgentes === 1 ? tApp('kpiUrgentOne') : tApp('kpiUrgent', { count: m.urgentes })) : tApp('kpiAllOk'));
   texto('#kpi-salud', m.porcentajeSano === null ? '—' : `${m.porcentajeSano} %`);
   texto('#kpi-salud-nota', m.revisadas ? tApp('kpiHealthNote', { good: m.distribucion.bien, reviewed: m.revisadas }) : tApp('kpiHealthNone'));
+  texto('#inicio-coleccion-count', `${m.total} ${tApp('plants').toLocaleLowerCase(idioma)}`);
   document.querySelector('#kpi-riego-tarjeta')?.classList.toggle('kpi-alerta', m.porRegar > 0);
   document.querySelector('#kpi-atencion-tarjeta')?.classList.toggle('kpi-alerta', m.urgentes > 0);
 
