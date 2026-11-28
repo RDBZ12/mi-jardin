@@ -1,4 +1,5 @@
 import { supabase } from '../supabase.js';
+import { comprimirFoto } from '../utils/imagenes.js';
 import { encolarOperacion, guardarCacheLocal, leerCacheLocal } from './offline.js';
 import { esErrorDeRed, obtenerUsuarioDeSesion, sincronizarPendientes } from './sincronizador.js';
 
@@ -38,10 +39,10 @@ export async function registrarCuidado(plantaId, tipo = 'riego', notas = '', opc
 
   const estadoSalud = opciones.estadoSalud || null;
   if (estadoSalud && !ESTADOS_SALUD.has(estadoSalud)) throw new Error('Estado de salud no válido');
-  const foto = opciones.foto || null;
+  const foto = opciones.foto ? await comprimirFoto(opciones.foto) : null;
 
   const id = crypto.randomUUID();
-  const extension = foto?.name?.match(/\.([a-z0-9]+)$/i)?.[1]?.toLowerCase() || 'jpg';
+  const extension = foto?.type === 'image/webp' ? 'webp' : 'jpg';
   const registro = {
     id,
     usuario_id: usuario.id,

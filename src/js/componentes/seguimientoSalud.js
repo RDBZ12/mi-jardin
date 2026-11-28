@@ -57,7 +57,6 @@ export function crearFormularioRevision(planta, alGuardar) {
     const elegido = formulario.querySelector('input[name="estado-salud"]:checked')?.value;
     if (!elegido) { error.textContent = tApp('chooseHealth'); return; }
     const archivo = foto.files[0] || null;
-    if (archivo && archivo.size > 5 * 1024 * 1024) { error.textContent = tApp('reviewSaveError', { error: '5 MB' }); return; }
 
     guardar.disabled = true;
     guardar.textContent = tApp('saving');
