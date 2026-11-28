@@ -356,3 +356,8 @@ html[data-theme='dark'], body[data-theme='dark'] {
 .catalogo-datos { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 6px 0 0; width: 100%; font-size: 13px; }
 .catalogo-datos dt { color: var(--muted); }
 .catalogo-datos dd { margin: 0; }
+.catalogo-paginacion { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 16px 0 8px; }
+.catalogo-pag-info { color: var(--muted); font-size: 13px; text-align: center; }
+.catalogo-pag-boton { min-width: 96px; }
+.catalogo-pag-boton:disabled { opacity: .45; cursor: default; }
+@media (min-width: 900px) { .catalogo-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; } }

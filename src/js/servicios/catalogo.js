@@ -63,3 +63,14 @@ export async function buscarProductos(texto, { signal } = {}) {
     productos: datos.productos.map(normalizarProducto),
   };
 }
+
+export const PRODUCTOS_POR_PAGINA = 12;
+
+// Paginación en el cliente: la API no ofrece páginas, devuelve hasta 100 resultados por búsqueda.
+export function paginar(items, pagina, tamano = PRODUCTOS_POR_PAGINA) {
+  const total = items.length;
+  const paginas = Math.max(1, Math.ceil(total / tamano));
+  const actual = Math.min(Math.max(1, Math.trunc(pagina) || 1), paginas);
+  const desde = (actual - 1) * tamano;
+  return { items: items.slice(desde, desde + tamano), pagina: actual, paginas, desde: total ? desde + 1 : 0, hasta: Math.min(desde + tamano, total), total };
+}
