@@ -18,6 +18,18 @@ export function arreglarTexto(valor) {
   }
 }
 
+// Las imágenes de respaldo (placehold.co) llevan el texto en la URL, también mal codificado.
+function arreglarUrlImagen(url) {
+  if (typeof url !== 'string' || !url.startsWith('https://')) return '';
+  try {
+    const u = new URL(url);
+    const texto = u.searchParams.get('text');
+    const arreglado = arreglarTexto(texto);
+    if (texto && arreglado !== texto) { u.searchParams.set('text', arreglado); return u.toString(); }
+  } catch { /* se deja la URL tal cual */ }
+  return url;
+}
+
 function numero(valor) {
   const n = Number(valor);
   return Number.isFinite(n) ? n : null;
@@ -29,8 +41,8 @@ export function normalizarProducto(crudo) {
     id: crudo.id,
     nombre: arreglarTexto(crudo.nombre_comercial || crudo.nombre || ''),
     descripcion: arreglarTexto(crudo.descripcion || ''),
-    imagen: typeof crudo.imagen === 'string' && crudo.imagen.startsWith('https://') ? crudo.imagen : '',
-    imagenRespaldo: typeof crudo.imagen_respaldo === 'string' && crudo.imagen_respaldo.startsWith('https://') ? crudo.imagen_respaldo : '',
+    imagen: arreglarUrlImagen(crudo.imagen),
+    imagenRespaldo: arreglarUrlImagen(crudo.imagen_respaldo),
     marca: arreglarTexto(crudo.marca || ''),
     modelo: arreglarTexto(crudo.modelo || ''),
     categoria: arreglarTexto(crudo.categoria || ''),
@@ -42,10 +54,11 @@ export function normalizarProducto(crudo) {
   };
 }
 
-export function formatearPrecio(precio, moneda, idioma) {
+// Siempre en es-DO: así el peso dominicano sale como "RD$" también con la app en inglés.
+export function formatearPrecio(precio, moneda) {
   if (precio == null) return '';
   try {
-    return new Intl.NumberFormat(idioma === 'en' ? 'en-US' : 'es-DO', { style: 'currency', currency: moneda }).format(precio);
+    return new Intl.NumberFormat('es-DO', { style: 'currency', currency: moneda }).format(precio);
   } catch {
     return `${moneda} ${precio}`;
   }
