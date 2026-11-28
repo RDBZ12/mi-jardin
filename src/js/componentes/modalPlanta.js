@@ -134,6 +134,7 @@ export function inicializarModalPlanta(contexto) {
   nombreCientifico.addEventListener('input', () => {
     const especie = buscarEspeciePorNombre(nombreCientifico.value);
     if (!especie) return;
+    nombreCientifico.value = especie.scientificName;
     if (especie.categoria !== 'otras') document.querySelector('#planta-categoria').value = especie.categoria;
     document.querySelector('#planta-frecuencia').value = especie.riego;
   });
