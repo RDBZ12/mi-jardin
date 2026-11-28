@@ -70,6 +70,5 @@ export async function comprimirFoto(archivo, {
   }
 
   const tipo = blob.type || 'image/webp';
-  const extension = tipo === 'image/webp' ? 'webp' : 'jpg';
-  return new File([blob], `planta.${extension}`, { type: tipo });
+  return new Blob([blob], { type: tipo });
 }

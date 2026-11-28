@@ -73,6 +73,9 @@ function quitarCamposLocales(payload) {
 async function subirFotoPlanta(usuarioId, operacion, payload) {
   const archivo = operacion.archivoFoto;
   if (!archivo) return payload.foto_ruta || null;
+  if (typeof archivo.size !== 'number' || archivo.size <= 0) {
+    throw new Error('La imagen no contiene datos. Selecciona la foto nuevamente.');
+  }
 
   const extension = archivo.name?.match(/\.([a-z0-9]+)$/i)?.[1]?.toLowerCase() || 'jpg';
   const ruta = payload.foto_ruta || `${usuarioId}/${payload.id}.${extension}`;
