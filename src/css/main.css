@@ -1,3 +1,5 @@
+@import '@fontsource-variable/inter/wght.css';
+@import '@fontsource-variable/fraunces/soft.css';
 @import './base.css';
 @import './layout.css';
 @import './componentes.css';

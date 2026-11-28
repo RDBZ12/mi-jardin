@@ -60,3 +60,43 @@ test('resumenSemana cuenta solo los últimos 7 días', () => {
   ], ahora);
   assert.deepEqual(r, { riegos: 1, revisiones: 1, otros: 1 });
 });
+
+import { metricasJardin, actividadSemanal } from '../src/js/utils/salud.js';
+
+test('metricasJardin: totales, distribución y porcentaje sano', () => {
+  const m = metricasJardin([
+    { ...base, ultimo_riego: dia(8), estado_salud: 'bien', ultima_revision: dia(1) },   // riego atrasado
+    { ...base, ultimo_riego: dia(1), estado_salud: 'bien', ultima_revision: dia(1) },
+    { ...base, ultimo_riego: dia(1), estado_salud: 'mal', ultima_revision: dia(1) },    // urgente
+    { ...base, ultimo_riego: dia(1) },                                                  // sin revisar, pero nueva
+  ], ahora);
+  assert.equal(m.total, 4);
+  assert.equal(m.porRegar, 1);
+  assert.equal(m.urgentes, 1);
+  assert.equal(m.atencion, 2);
+  assert.deepEqual(m.distribucion, { bien: 2, regular: 0, mal: 1, sin: 1 });
+  assert.equal(m.revisadas, 3);
+  assert.equal(m.porcentajeSano, 67);
+});
+
+test('metricasJardin sin plantas', () => {
+  const m = metricasJardin([], ahora);
+  assert.equal(m.total, 0);
+  assert.equal(m.porcentajeSano, null);
+  assert.equal(m.proximoRiego, null);
+});
+
+test('actividadSemanal agrupa por día y descarta lo antiguo', () => {
+  const dias = actividadSemanal([
+    { tipo: 'riego', fecha_hora: dia(0) },
+    { tipo: 'riego', fecha_hora: dia(0) },
+    { tipo: 'revision', estado_salud: 'bien', fecha_hora: dia(3) },
+    { tipo: 'riego', fecha_hora: dia(6) },
+    { tipo: 'riego', fecha_hora: dia(7) },
+  ], ahora);
+  assert.equal(dias.length, 7);
+  assert.equal(dias[6].riegos, 2);
+  assert.equal(dias[3].revisiones, 1);
+  assert.equal(dias[0].riegos, 1);
+  assert.equal(dias.reduce((n, d) => n + d.riegos, 0), 3);
+});

@@ -27,6 +27,10 @@ export const textoApp = {
     changePassword: 'Cambiar contraseña', newPassword: 'Contraseña nueva', confirmPassword: 'Confirmar contraseña', passwordHelp: 'Elige una contraseña segura de al menos 8 caracteres.', updatePassword: 'Actualizar contraseña', passwordMismatch: 'Las contraseñas no coinciden.', passwordUpdated: 'Contraseña actualizada.', passwordUpdateError: 'No se pudo actualizar la contraseña: {error}', passwordOffline: 'Conéctate a internet para cambiar la contraseña.',
     garden: 'TU JARDÍN', addPlantTitle: 'Agregar una planta', editPlant: 'Editar planta', closeForm: 'Cerrar formulario', scientificName: 'Nombre científico', category: 'Categoría',
     waterEvery: 'Riego cada (días)', notes: 'Notas de cuidado', notesPlaceholder: 'Luz, sustrato u otros detalles', cancel: 'Cancelar', savePlant: 'Guardar planta',
+    greeting: 'Hola, {name}', kpiPlantsNote: 'en tu jardín', kpiWater: 'Por regar', kpiNextDate: 'Próximo: {date}', kpiAttention: 'Atención', kpiUrgent: '{count} urgentes', kpiUrgentOne: '1 urgente', kpiAllOk: 'Todo en orden',
+    kpiHealth: 'Salud', kpiHealthNote: '{good} de {reviewed} en buen estado', kpiHealthNone: 'Aún sin revisiones', quickTitle: '¿Qué necesitas hoy?', quickWater: 'Regar', quickCheck: 'Revisar salud',
+    healthPanel: 'Salud del jardín', activityPanel: 'Últimos 7 días', activityWater: 'Riegos', activityChecks: 'Revisiones', activityLabel: '{water} riegos y {reviews} revisiones', activityEmpty: 'Sin actividad en los últimos 7 días.',
+    emptyGarden: 'Aún no tienes plantas. Agrega la primera para empezar el seguimiento.',
     actionError: 'No se pudo completar la acción: {error}',
     healthGood: 'Bien', healthFair: 'Regular', healthBad: 'Mal', healthLabel: 'Salud', notReviewed: 'Sin revisar',
     review: 'Revisión', reviewPlant: 'Revisar salud', howIsPlant: '¿Cómo está hoy?', reviewNote: 'Nota', reviewNotePlaceholder: 'Hojas, color, plagas, humedad…',
@@ -111,6 +115,10 @@ export const textoApp = {
     changePassword: 'Change password', newPassword: 'New password', confirmPassword: 'Confirm password', passwordHelp: 'Choose a secure password with at least 8 characters.', updatePassword: 'Update password', passwordMismatch: 'The passwords do not match.', passwordUpdated: 'Password updated.', passwordUpdateError: 'Could not update the password: {error}', passwordOffline: 'Connect to the internet to change your password.',
     garden: 'YOUR GARDEN', addPlantTitle: 'Add a plant', editPlant: 'Edit plant', closeForm: 'Close form', scientificName: 'Scientific name', category: 'Category',
     waterEvery: 'Water every (days)', notes: 'Care notes', notesPlaceholder: 'Light, soil, or other details', cancel: 'Cancel', savePlant: 'Save plant',
+    greeting: 'Hi, {name}', kpiPlantsNote: 'in your garden', kpiWater: 'To water', kpiNextDate: 'Next: {date}', kpiAttention: 'Attention', kpiUrgent: '{count} urgent', kpiUrgentOne: '1 urgent', kpiAllOk: 'All good',
+    kpiHealth: 'Health', kpiHealthNote: '{good} of {reviewed} in good shape', kpiHealthNone: 'No check-ups yet', quickTitle: 'What do you need today?', quickWater: 'Water', quickCheck: 'Check health',
+    healthPanel: 'Garden health', activityPanel: 'Last 7 days', activityWater: 'Waterings', activityChecks: 'Check-ups', activityLabel: '{water} waterings and {reviews} check-ups', activityEmpty: 'No activity in the last 7 days.',
+    emptyGarden: 'You have no plants yet. Add the first one to start tracking.',
     actionError: 'The action could not be completed: {error}',
     healthGood: 'Good', healthFair: 'Fair', healthBad: 'Poor', healthLabel: 'Health', notReviewed: 'Not reviewed',
     review: 'Check-up', reviewPlant: 'Check health', howIsPlant: 'How is it today?', reviewNote: 'Note', reviewNotePlaceholder: 'Leaves, color, pests, moisture…',
@@ -236,8 +244,6 @@ export function traducirDashboard() {
   }
 
   const textos = [
-    ['#pagina-inicio .section-eyebrow', 'homeEyebrow'], ['#pagina-inicio .plants-heading h1', 'homeTitle'],
-    ['#pagina-inicio .summary-item:first-child span', 'plants'], ['#pagina-inicio .summary-item:nth-child(2) span', 'nextWatering'],
     ['#attention-title', 'needsAttention'],
     ['#pagina-plantas .section-eyebrow', 'plantsEyebrow'],
     ['#pagina-plantas .plants-heading h1', 'plantsTitle'], ['#btn-abrir-modal', 'newPlant'],
@@ -277,13 +283,7 @@ export function traducirDashboard() {
   botonAgregarFlotante.title = tApp('addPlant');
   botonAgregarFlotante.dataset.tooltip = tApp('addPlant');
 
-  const titulosInicio = document.querySelectorAll('#pagina-inicio .section-heading h2');
-  if (titulosInicio[0]) titulosInicio[0].textContent = tApp('upcomingWaterings');
-  if (titulosInicio[1]) titulosInicio[1].textContent = tApp('collection');
-  const botonesInicio = document.querySelectorAll('#pagina-inicio [data-ir-a]');
-  if (botonesInicio[0]) botonesInicio[0].textContent = tApp('registerWater');
-  if (botonesInicio[1]) botonesInicio[1].textContent = tApp('reminders');
-  if (botonesInicio[2]) botonesInicio[2].textContent = tApp('seeAll');
+  document.querySelectorAll('#pagina-inicio [data-t]').forEach((el) => { el.textContent = tApp(el.dataset.t); });
 
   const etiquetas = [
     ['label[for="planta-nombre"]', 'name'], ['label[for="planta-especie"]', 'scientificName'],
