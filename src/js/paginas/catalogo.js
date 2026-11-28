@@ -1,4 +1,4 @@
-import { buscarProductos, formatearPrecio } from '../servicios/catalogo.js';
+import { buscarProductos, formatearPrecio, paginar } from '../servicios/catalogo.js';
 import { crearElemento } from '../utils/dom.js';
 
 export const vistaCatalogo = `<section class="app-page oculto" id="pagina-catalogo" data-pagina="catalogo">
@@ -9,6 +9,7 @@ export const vistaCatalogo = `<section class="app-page oculto" id="pagina-catalo
             <label class="search-field"><span class="sr-only" data-t="catalogSearch">Buscar producto</span><input id="catalogo-busqueda" type="search" maxlength="60" autocomplete="off" placeholder="Buscar producto" /></label>
             <p class="catalogo-estado" id="catalogo-estado" role="status" aria-live="polite"></p>
             <div class="catalogo-grid" id="catalogo-grid"></div>
+            <nav class="catalogo-paginacion oculto" id="catalogo-paginacion" aria-label="Paginación"></nav>
           </div>
           <article class="catalogo-detalle oculto" id="catalogo-detalle" aria-live="polite"></article>
         </section>`;
@@ -17,6 +18,8 @@ let controlador = null;
 let temporizador = null;
 let ultimaBusqueda = null;
 let productosActuales = [];
+let totalCoincidencias = 0;
+let paginaActual = 1;
 
 function imagenProducto(producto, clase) {
   const img = crearElemento('img', clase);
@@ -91,6 +94,33 @@ function cerrarDetalle() {
   document.querySelector('#catalogo-lista-vista').classList.remove('oculto');
 }
 
+function dibujarPagina(contexto, { subir = false } = {}) {
+  const grid = document.querySelector('#catalogo-grid');
+  const nav = document.querySelector('#catalogo-paginacion');
+  const p = paginar(productosActuales, paginaActual);
+  paginaActual = p.pagina;
+  grid.replaceChildren(...p.items.map((producto) => tarjeta(producto, contexto)));
+  if (!p.total) { nav.classList.add('oculto'); nav.replaceChildren(); return; }
+  let texto = contexto.tApp('catalogRange', { from: p.desde, to: p.hasta, total: p.total });
+  if (totalCoincidencias > p.total) texto += ` ${contexto.tApp('catalogCapped', { total: totalCoincidencias })}`;
+  mostrarEstado(texto, { contexto });
+
+  const crear = (clave, destino, desactivado) => {
+    const boton = crearElemento('button', 'button-secondary catalogo-pag-boton', contexto.tApp(clave));
+    boton.type = 'button';
+    boton.disabled = desactivado;
+    boton.addEventListener('click', () => { paginaActual = destino; dibujarPagina(contexto, { subir: true }); });
+    return boton;
+  };
+  nav.replaceChildren(
+    crear('catalogPrev', p.pagina - 1, p.pagina <= 1),
+    crearElemento('span', 'catalogo-pag-info', contexto.tApp('catalogPage', { page: p.pagina, pages: p.paginas })),
+    crear('catalogNext', p.pagina + 1, p.pagina >= p.paginas),
+  );
+  nav.classList.toggle('oculto', p.paginas <= 1);
+  if (subir) document.querySelector('#catalogo-busqueda')?.scrollIntoView?.({ block: 'start' });
+}
+
 function mostrarEstado(texto, { reintentar = null, contexto } = {}) {
   const estado = document.querySelector('#catalogo-estado');
   estado.replaceChildren(texto);
@@ -116,16 +146,17 @@ async function buscar(contexto, { forzar = false } = {}) {
     if (signal.aborted) return;
     ultimaBusqueda = termino;
     productosActuales = resultado.productos;
-    grid.replaceChildren(...productosActuales.map((p) => tarjeta(p, contexto)));
+    totalCoincidencias = resultado.total;
+    paginaActual = 1;
+    dibujarPagina(contexto);
     if (!productosActuales.length) {
       mostrarEstado(termino ? contexto.tApp('catalogEmpty', { term: termino }) : contexto.tApp('catalogTypeToSearch'), { contexto });
-    } else {
-      mostrarEstado(contexto.tApp('catalogShowing', { shown: productosActuales.length, total: resultado.total }), { contexto });
     }
   } catch (error) {
     if (error?.name === 'AbortError' || signal.aborted) return;
     ultimaBusqueda = null;
-    grid.replaceChildren();
+    productosActuales = [];
+    dibujarPagina(contexto);
     mostrarEstado(contexto.tApp('catalogError'), { reintentar: () => buscar(contexto, { forzar: true }), contexto });
   } finally {
     if (!signal.aborted) grid.removeAttribute('aria-busy');

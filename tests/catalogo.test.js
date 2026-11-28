@@ -56,3 +56,23 @@ test('buscarProductos codifica la consulta y valida la respuesta', async () => {
   globalThis.fetch = async () => ({ ok: false, status: 500 });
   await assert.rejects(() => buscarProductos('a'), /500/);
 });
+
+import { paginar } from '../src/js/servicios/catalogo.js';
+
+test('paginar: 100 resultados en páginas de 12', () => {
+  const todos = Array.from({ length: 100 }, (_, i) => i + 1);
+  const p1 = paginar(todos, 1);
+  assert.deepEqual([p1.items.length, p1.paginas, p1.desde, p1.hasta, p1.total], [12, 9, 1, 12, 100]);
+  const ultima = paginar(todos, 9);
+  assert.deepEqual([ultima.items.length, ultima.desde, ultima.hasta], [4, 97, 100]);
+  assert.equal(ultima.items.at(-1), 100);
+});
+
+test('paginar: página fuera de rango se ajusta y lista vacía es segura', () => {
+  const todos = [1, 2, 3];
+  assert.equal(paginar(todos, 99).pagina, 1);
+  assert.equal(paginar(todos, -5).pagina, 1);
+  assert.equal(paginar(todos, 'x').pagina, 1);
+  const vacio = paginar([], 1);
+  assert.deepEqual([vacio.items.length, vacio.paginas, vacio.desde, vacio.hasta], [0, 1, 0, 0]);
+});
