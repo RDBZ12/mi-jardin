@@ -2,7 +2,7 @@ import { buscarProductos, formatearPrecio, paginar } from '../servicios/catalogo
 import { crearElemento } from '../utils/dom.js';
 
 export const vistaCatalogo = `<section class="app-page oculto" id="pagina-catalogo" data-pagina="catalogo">
-          <button class="text-action back-action menu-back-arrow" type="button" data-volver-menu data-i18n-aria-label="volver" aria-label="Volver al menú" title="Volver al menú"><span aria-hidden="true">←</span></button>
+          <button class="text-action back-action menu-back-arrow" type="button" id="catalogo-atras" data-i18n-aria-label="volver" aria-label="Volver al menú" title="Volver al menú"><span aria-hidden="true">←</span></button>
           <div id="catalogo-lista-vista">
             <div class="plants-heading"><div><p class="section-eyebrow" data-t="catalogEyebrow">CATÁLOGO</p><h1 data-t="catalogTitle">Catálogo de productos</h1></div></div>
             <p class="page-intro" data-t="catalogIntro">Busca productos por nombre, marca o tipo.</p>
@@ -20,6 +20,9 @@ let ultimaBusqueda = null;
 let productosActuales = [];
 let totalCoincidencias = 0;
 let paginaActual = 1;
+let productoAbierto = null;
+// Qué mensaje se muestra bajo el buscador. Se guarda el tipo (no el texto) para volver a pintarlo al cambiar de idioma.
+let estado = { tipo: 'vacio', termino: '' };
 
 function imagenProducto(producto, clase) {
   const img = crearElemento('img', clase);
@@ -40,9 +43,8 @@ function imagenProducto(producto, clase) {
 }
 
 function insignia(producto, contexto) {
-  const el = crearElemento('span', `plant-badge ${producto.disponible ? 'badge-ok' : 'badge-atrasado'}`,
+  return crearElemento('span', `plant-badge ${producto.disponible ? 'badge-ok' : 'badge-atrasado'}`,
     producto.disponible ? contexto.tApp('catalogAvailable') : contexto.tApp('catalogSoldOut'));
-  return el;
 }
 
 function tarjeta(producto, contexto) {
@@ -56,16 +58,22 @@ function tarjeta(producto, contexto) {
     insignia(producto, contexto),
   );
   boton.append(imagenProducto(producto, 'catalogo-imagen'), info);
-  boton.addEventListener('click', () => abrirDetalle(producto, contexto));
+  boton.addEventListener('click', () => { productoAbierto = producto; pintarDetalle(contexto); window.scrollTo?.({ top: 0 }); });
   return boton;
 }
 
-function abrirDetalle(producto, contexto) {
+function pintarDetalle(contexto) {
   const detalle = document.querySelector('#catalogo-detalle');
-  const atras = crearElemento('button', 'text-action back-action');
-  atras.type = 'button';
-  atras.append(crearElemento('span', '', '← '), crearElemento('span', '', contexto.tApp('catalogBackList')));
-  atras.addEventListener('click', cerrarDetalle);
+  const lista = document.querySelector('#catalogo-lista-vista');
+  const atras = document.querySelector('#catalogo-atras');
+  if (!productoAbierto) {
+    detalle.classList.add('oculto');
+    lista.classList.remove('oculto');
+    atras.setAttribute('aria-label', contexto.tApp('backToMenu'));
+    atras.title = contexto.tApp('backToMenu');
+    return;
+  }
+  const producto = productoAbierto;
   const datos = [
     [contexto.tApp('catalogBrand'), producto.marca],
     [contexto.tApp('catalogModel'), producto.modelo],
@@ -73,43 +81,61 @@ function abrirDetalle(producto, contexto) {
     [contexto.tApp('catalogType'), producto.tipo],
     [contexto.tApp('catalogStock'), contexto.tApp('catalogUnits', { n: producto.existencia })],
   ].filter(([, valor]) => valor !== '');
-  const lista = crearElemento('dl', 'catalogo-datos');
-  lista.append(...datos.flatMap(([etiqueta, valor]) => [crearElemento('dt', '', etiqueta), crearElemento('dd', '', valor)]));
+  const dl = crearElemento('dl', 'catalogo-datos');
+  dl.append(...datos.flatMap(([etiqueta, valor]) => [crearElemento('dt', '', etiqueta), crearElemento('dd', '', valor)]));
   detalle.replaceChildren(
-    atras,
     imagenProducto(producto, 'catalogo-imagen-grande'),
     crearElemento('h2', 'catalogo-titulo', producto.nombre),
     crearElemento('p', 'catalogo-precio catalogo-precio-grande', formatearPrecio(producto.precio, producto.moneda, contexto.obtenerIdioma())),
     insignia(producto, contexto),
     crearElemento('p', 'catalogo-descripcion', producto.descripcion),
-    lista,
+    dl,
   );
-  document.querySelector('#catalogo-lista-vista').classList.add('oculto');
+  lista.classList.add('oculto');
   detalle.classList.remove('oculto');
-  window.scrollTo?.({ top: 0 });
+  atras.setAttribute('aria-label', contexto.tApp('catalogBackList'));
+  atras.title = contexto.tApp('catalogBackList');
 }
 
-function cerrarDetalle() {
-  document.querySelector('#catalogo-detalle').classList.add('oculto');
-  document.querySelector('#catalogo-lista-vista').classList.remove('oculto');
+function pintarEstado(contexto, pagina) {
+  const el = document.querySelector('#catalogo-estado');
+  const t = contexto.tApp;
+  let texto = '';
+  let reintentar = false;
+  if (estado.tipo === 'cargando') texto = t('catalogLoading');
+  else if (estado.tipo === 'error') { texto = t('catalogError'); reintentar = true; }
+  else if (estado.tipo === 'sin-resultados') texto = estado.termino ? t('catalogEmpty', { term: estado.termino }) : t('catalogTypeToSearch');
+  else if (estado.tipo === 'rango' && pagina) {
+    texto = t('catalogRange', { from: pagina.desde, to: pagina.hasta, total: pagina.total });
+    if (totalCoincidencias > pagina.total) texto += ` ${t('catalogCapped', { total: totalCoincidencias })}`;
+  }
+  el.replaceChildren(texto);
+  if (reintentar) {
+    const boton = crearElemento('button', 'text-action', t('catalogRetry'));
+    boton.type = 'button';
+    boton.addEventListener('click', () => void buscar(contexto, { forzar: true }));
+    el.append(' ', boton);
+  }
 }
 
-function dibujarPagina(contexto, { subir = false } = {}) {
+function pintarLista(contexto) {
   const grid = document.querySelector('#catalogo-grid');
   const nav = document.querySelector('#catalogo-paginacion');
   const p = paginar(productosActuales, paginaActual);
   paginaActual = p.pagina;
   grid.replaceChildren(...p.items.map((producto) => tarjeta(producto, contexto)));
+  pintarEstado(contexto, p);
+  nav.setAttribute('aria-label', contexto.tApp('catalogPagination'));
   if (!p.total) { nav.classList.add('oculto'); nav.replaceChildren(); return; }
-  let texto = contexto.tApp('catalogRange', { from: p.desde, to: p.hasta, total: p.total });
-  if (totalCoincidencias > p.total) texto += ` ${contexto.tApp('catalogCapped', { total: totalCoincidencias })}`;
-  mostrarEstado(texto, { contexto });
-
   const crear = (clave, destino, desactivado) => {
     const boton = crearElemento('button', 'button-secondary catalogo-pag-boton', contexto.tApp(clave));
     boton.type = 'button';
     boton.disabled = desactivado;
-    boton.addEventListener('click', () => { paginaActual = destino; dibujarPagina(contexto, { subir: true }); });
+    boton.addEventListener('click', () => {
+      paginaActual = destino;
+      pintarLista(contexto);
+      document.querySelector('#catalogo-busqueda')?.scrollIntoView?.({ block: 'start' });
+    });
     return boton;
   };
   nav.replaceChildren(
@@ -118,18 +144,6 @@ function dibujarPagina(contexto, { subir = false } = {}) {
     crear('catalogNext', p.pagina + 1, p.pagina >= p.paginas),
   );
   nav.classList.toggle('oculto', p.paginas <= 1);
-  if (subir) document.querySelector('#catalogo-busqueda')?.scrollIntoView?.({ block: 'start' });
-}
-
-function mostrarEstado(texto, { reintentar = null, contexto } = {}) {
-  const estado = document.querySelector('#catalogo-estado');
-  estado.replaceChildren(texto);
-  if (reintentar) {
-    const boton = crearElemento('button', 'text-action', contexto.tApp('catalogRetry'));
-    boton.type = 'button';
-    boton.addEventListener('click', reintentar);
-    estado.append(' ', boton);
-  }
 }
 
 async function buscar(contexto, { forzar = false } = {}) {
@@ -139,7 +153,8 @@ async function buscar(contexto, { forzar = false } = {}) {
   controlador = new AbortController();
   const { signal } = controlador;
   const grid = document.querySelector('#catalogo-grid');
-  mostrarEstado(contexto.tApp('catalogLoading'), { contexto });
+  estado = { tipo: 'cargando', termino };
+  pintarEstado(contexto);
   grid.setAttribute('aria-busy', 'true');
   try {
     const resultado = await buscarProductos(termino, { signal });
@@ -148,26 +163,25 @@ async function buscar(contexto, { forzar = false } = {}) {
     productosActuales = resultado.productos;
     totalCoincidencias = resultado.total;
     paginaActual = 1;
-    dibujarPagina(contexto);
-    if (!productosActuales.length) {
-      mostrarEstado(termino ? contexto.tApp('catalogEmpty', { term: termino }) : contexto.tApp('catalogTypeToSearch'), { contexto });
-    }
+    estado = productosActuales.length ? { tipo: 'rango', termino } : { tipo: 'sin-resultados', termino };
+    pintarLista(contexto);
   } catch (error) {
     if (error?.name === 'AbortError' || signal.aborted) return;
     ultimaBusqueda = null;
     productosActuales = [];
-    dibujarPagina(contexto);
-    mostrarEstado(contexto.tApp('catalogError'), { reintentar: () => buscar(contexto, { forzar: true }), contexto });
+    estado = { tipo: 'error', termino };
+    pintarLista(contexto);
   } finally {
     if (!signal.aborted) grid.removeAttribute('aria-busy');
   }
 }
 
+// Se llama al entrar a la vista y cuando cambia el idioma: vuelve a pintar todo con los textos actuales.
 export function renderizarCatalogo(contexto) {
-  cerrarDetalle();
-  const entrada = document.querySelector('#catalogo-busqueda');
-  entrada.placeholder = contexto.tApp('catalogSearchPlaceholder');
-  void buscar(contexto, { forzar: ultimaBusqueda === null });
+  document.querySelector('#catalogo-busqueda').placeholder = contexto.tApp('catalogSearchPlaceholder');
+  pintarLista(contexto);
+  pintarDetalle(contexto);
+  if (ultimaBusqueda === null && estado.tipo !== 'cargando') void buscar(contexto, { forzar: true });
 }
 
 export function inicializarCatalogo(contexto) {
@@ -175,4 +189,17 @@ export function inicializarCatalogo(contexto) {
     clearTimeout(temporizador);
     temporizador = setTimeout(() => void buscar(contexto), 350);
   });
+  // La flecha de arriba es la única de vuelta: del detalle va a la lista; de la lista, al menú.
+  document.querySelector('#catalogo-atras')?.addEventListener('click', () => {
+    if (productoAbierto) {
+      productoAbierto = null;
+      pintarDetalle(contexto);
+      return;
+    }
+    document.querySelectorAll('.subvista').forEach((subvista) => subvista.classList.add('oculto'));
+    document.querySelector('#menu-lista-principal')?.classList.remove('oculto');
+    contexto.navegarA('menu');
+  });
+  // Al entrar desde el menú se empieza siempre en la lista, no en un detalle anterior.
+  document.querySelector('[data-ir-pagina="catalogo"]')?.addEventListener('click', () => { productoAbierto = null; }, true);
 }
