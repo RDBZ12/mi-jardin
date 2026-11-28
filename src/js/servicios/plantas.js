@@ -136,5 +136,8 @@ export async function eliminarPlanta(id) {
     accion: 'delete',
     payload: { id, foto_ruta: planta.foto_ruta || null },
   });
-  if (navigator.onLine) void sincronizarPendientes(usuario.id);
+  if (navigator.onLine) {
+    const resultado = await sincronizarPendientes(usuario.id);
+    if (resultado.error) throw resultado.error;
+  }
 }

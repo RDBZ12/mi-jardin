@@ -81,14 +81,12 @@ export async function registrarCuidado(plantaId, tipo = 'riego', notas = '', opc
     archivoFoto: foto,
   });
   if (navigator.onLine) {
-    // Las revisiones esperan a sincronizar para que la pantalla ya lea el estado nuevo del servidor.
-    const sincronizacion = (async () => {
-      let resultado = await sincronizarPendientes(usuario.id);
-      // Si ya había una sincronización en curso, puede no haber incluido este registro.
-      if (resultado.pendientes && navigator.onLine) resultado = await sincronizarPendientes(usuario.id);
-      return resultado;
-    })();
-    if (estadoSalud) await sincronizacion; else void sincronizacion;
+    let resultado = await sincronizarPendientes(usuario.id);
+    // Si ya había una sincronización en curso, puede no haber incluido este registro.
+    if (resultado.pendientes && navigator.onLine && !resultado.error) {
+      resultado = await sincronizarPendientes(usuario.id);
+    }
+    if (resultado.error) throw resultado.error;
   }
 
   return registro;
