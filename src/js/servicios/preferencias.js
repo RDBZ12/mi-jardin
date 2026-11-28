@@ -1,7 +1,7 @@
 const TRADUCCIONES = {
   es: {
     a11y_brillo_ayuda: 'Ajusta la luminosidad de Mi Jardín. El brillo físico se cambia desde el Centro de control del iPhone.',
-    menu_titulo: 'Menú', menu_identificar: 'Identificar plantas', menu_historial: 'Historial de cuidados', menu_perfil: 'Perfil', menu_sonidos: 'Sonidos y alertas', menu_datos: 'Datos entre dispositivos', menu_idioma: 'Idioma', menu_salir: 'Cerrar sesión', volver: 'Volver al menú', volverPerfil: 'Volver a Perfil',
+    menu_titulo: 'Menú', menu_identificar: 'Identificar plantas', menu_catalogo: 'Catálogo de productos', menu_historial: 'Historial de cuidados', menu_perfil: 'Perfil', menu_sonidos: 'Sonidos y alertas', menu_datos: 'Datos entre dispositivos', menu_idioma: 'Idioma', menu_salir: 'Cerrar sesión', volver: 'Volver al menú', volverPerfil: 'Volver a Perfil',
     perfil_apariencia_categoria: 'Apariencia', perfil_cuenta_categoria: 'Información personal', perfil_respaldo_categoria: 'Respaldo de mi jardín',
     perfil_titulo: 'Mi Perfil', perfil_nombre: 'Nombre:', perfil_correo: 'Correo:', perfil_plantas: 'Plantas registradas:',
     sonido_titulo: 'Tono de recordatorio', sonido_desc: 'Elige cómo sonarán las alertas de riego en este dispositivo.', sonido_ninguno: 'Ninguno (Silencio)', sonido_digital: 'Digital', sonido_suave: 'Suave', sonido_campana: 'Campana', sonido_probar: 'Probar sonido',
@@ -9,7 +9,7 @@ const TRADUCCIONES = {
   },
   en: {
     a11y_brillo_ayuda: 'Adjusts Mi Jardín brightness. Physical brightness is changed from iPhone Control Center.',
-    menu_titulo: 'Menu', menu_identificar: 'Identify plants', menu_historial: 'Care history', menu_perfil: 'Profile', menu_sonidos: 'Sounds & alerts', menu_datos: 'Cross-device data', menu_idioma: 'Language', menu_salir: 'Log out', volver: 'Back to menu', volverPerfil: 'Back to Profile',
+    menu_titulo: 'Menu', menu_identificar: 'Identify plants', menu_catalogo: 'Product catalog', menu_historial: 'Care history', menu_perfil: 'Profile', menu_sonidos: 'Sounds & alerts', menu_datos: 'Cross-device data', menu_idioma: 'Language', menu_salir: 'Log out', volver: 'Back to menu', volverPerfil: 'Back to Profile',
     perfil_apariencia_categoria: 'Appearance', perfil_cuenta_categoria: 'Personal information', perfil_respaldo_categoria: 'Garden backup',
     perfil_titulo: 'My Profile', perfil_nombre: 'Name:', perfil_correo: 'Email:', perfil_plantas: 'Registered plants:',
     sonido_titulo: 'Reminder tone', sonido_desc: 'Choose how watering alerts sound on this device.', sonido_ninguno: 'None (Mute)', sonido_digital: 'Digital', sonido_suave: 'Soft', sonido_campana: 'Bell', sonido_probar: 'Test sound',

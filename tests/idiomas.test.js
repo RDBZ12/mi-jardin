@@ -21,7 +21,7 @@ test('las claves del monitoreo existen en español e inglés', () => {
 });
 
 test('todo tApp("...") usado en el código nuevo existe en ambos idiomas', () => {
-  const archivos = ['componentes/seguimientoSalud.js', 'paginas/inicio.js', 'paginas/plantas.js', 'paginas/historial.js'];
+  const archivos = ['componentes/seguimientoSalud.js', 'paginas/inicio.js', 'paginas/plantas.js', 'paginas/historial.js', 'paginas/catalogo.js'];
   for (const archivo of archivos) {
     const fuente = readFileSync(new URL(`../src/js/${archivo}`, import.meta.url), 'utf8');
     for (const [, clave] of [...fuente.matchAll(/tApp\('([A-Za-z]+)'/g), ...fuente.matchAll(/data-t="([A-Za-z]+)"/g)]) {
