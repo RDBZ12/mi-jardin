@@ -164,7 +164,7 @@ html[data-theme='dark'] .theme-option.seleccionado { border-color: #a9d8a8; back
 .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: 2px solid rgba(94,146,113,.35); outline-offset: 1px; }
 .form-field input[type='file'] { padding: 8px; }
 .photo-preview { display: block; margin-top: 10px; }
-.photo-preview img { display: block; width: min(100%, 220px); max-height: 180px; object-fit: cover; border-radius: 6px; }
+.photo-preview img { display: block; width: min(100%, 220px); height: 150px; max-height: 150px; object-fit: cover; border-radius: 6px; }
 .optional { color: var(--muted); font-weight: 400; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-error { min-height: 0; margin: 0 0 10px; font-size: 12px; }
@@ -180,9 +180,10 @@ html[data-theme='dark'] .theme-option.seleccionado { border-color: #a9d8a8; back
 .grid-plantas { grid-template-columns: 1fr; gap: 12px; }
 .plant-photo, .plant-photo-placeholder { aspect-ratio: 16 / 9; }
 .modal { align-items: end; padding: 10px calc(10px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left)); }
-.modal.modal-planta-fullscreen { align-items: stretch; padding: 0; }
+.modal.modal-planta-fullscreen { z-index: 30; align-items: stretch; padding: 0; background: var(--page); }
 .modal-contenido { max-height: 92vh; max-height: 92dvh; padding: 20px; }
-.modal-planta-fullscreen .modal-contenido { height: 100%; max-height: none; padding: calc(20px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) calc(90px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); }
+.modal-planta-fullscreen .modal-contenido { height: 100%; max-height: none; background: var(--page); padding: calc(20px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) calc(90px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); }
+.teclado-abierto .modal-planta-fullscreen .photo-preview { display: none; }
 .form-row { grid-template-columns: 1fr; gap: 0; }
 .form-field input, .form-field select, .form-field textarea, .profile-import-label input { font-size: 16px; }
 .timeline-item { grid-template-columns: 1fr auto; gap: 6px 10px; }
