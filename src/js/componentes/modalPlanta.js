@@ -147,7 +147,7 @@ export function inicializarModalPlanta(contexto) {
       cerrarModalPlanta();
       await contexto.cargarJardin();
     } catch (error) {
-      errorPlanta.textContent = contexto.tApp('savePlantError', { error: error.message });
+      errorPlanta.textContent = contexto.tApp('savePlantError', { error: error.message || 'Error desconocido' });
     } finally {
       botonGuardarPlanta.disabled = false;
       botonGuardarPlanta.textContent = contexto.tApp('savePlant');

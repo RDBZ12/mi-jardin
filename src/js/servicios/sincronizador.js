@@ -174,6 +174,7 @@ export async function sincronizarPendientes(usuarioId, onProgreso = null) {
 
     const pendientes = await obtenerColaPendiente(usuarioId);
     let procesadas = 0;
+    let ultimoError = null;
     for (const operacion of pendientes) {
       try {
         if (!navigator.onLine) break;
@@ -181,6 +182,7 @@ export async function sincronizarPendientes(usuarioId, onProgreso = null) {
         await eliminarDeCola(operacion.id);
         procesadas += 1;
       } catch (errorOperacion) {
+        ultimoError = errorOperacion;
         if (!errorDeRed(errorOperacion)) {
           console.error('No se pudo sincronizar una operación:', errorOperacion);
         }
@@ -190,7 +192,7 @@ export async function sincronizarPendientes(usuarioId, onProgreso = null) {
 
     const restantes = (await obtenerColaPendiente(usuarioId)).length;
     if (procesadas && onProgreso) await onProgreso();
-    return { procesadas, pendientes: restantes };
+    return { procesadas, pendientes: restantes, error: ultimoError };
   })().finally(() => {
     sincronizacionActual = null;
   });

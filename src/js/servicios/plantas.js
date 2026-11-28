@@ -87,7 +87,10 @@ export async function guardarPlanta(planta, archivoFoto = null) {
     archivoFoto: archivoOptimizado,
   });
 
-  if (navigator.onLine) void sincronizarPendientes(usuario.id);
+  if (navigator.onLine) {
+    const resultado = await sincronizarPendientes(usuario.id);
+    if (resultado.error) throw resultado.error;
+  }
   return registroLocal;
 }
 
