@@ -2,7 +2,7 @@ import { reproducirTono } from '../servicios/sonidos.js';
 
 const CLAVE = 'mi-jardin-accesibilidad';
 const POR_DEFECTO = Object.freeze({ brillo: 100, fuente: 'estandar', tamano: 'normal', negrita: false, contraste: false, sonido: true, narrador: false });
-const FUENTES = { estandar: "'DM Sans', sans-serif", legible: "Arial, Helvetica, sans-serif", espaciada: "'OpenDyslexic', 'DM Sans', sans-serif" };
+const FUENTES = { estandar: "'Inter Variable', Inter, sans-serif", legible: "Arial, Helvetica, sans-serif", espaciada: "'OpenDyslexic', 'Inter Variable', Inter, sans-serif" };
 let preferencias = { ...POR_DEFECTO };
 
 export function crearTarjetaAccesibilidad() {

@@ -1,4 +1,4 @@
-:root { --a11y-brightness: 1; --a11y-overlay-color: #000; --a11y-overlay-opacity: 0; --a11y-font-family: 'DM Sans', sans-serif; }
+:root { --a11y-brightness: 1; --a11y-overlay-color: #000; --a11y-overlay-opacity: 0; --a11y-font-family: var(--fuente-texto); }
 #vista-app { position: relative; }
 #vista-app::after, #vista-auth::after { position: fixed; z-index: 999; inset: 0; background: var(--a11y-overlay-color); opacity: var(--a11y-overlay-opacity); pointer-events: none; content: ''; }
 html[data-a11y-fuente='legible'] body, html[data-a11y-fuente='espaciada'] body { font-family: var(--a11y-font-family); }
